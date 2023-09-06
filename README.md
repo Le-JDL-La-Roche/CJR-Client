@@ -17,6 +17,6 @@ Le site est hébergé sur un serveur Node.js, qui sert les fichiers générés p
 
 ## *Open source*
 
-Le code source du site Web est disponible sur [GitHub](/https://github.com/Le-JDL-La-Roche/Le-JDL-Client) sous licence [GNU GPLv3](https://github.com/Le-JDL-La-Roche/Match-Manager-Client/blob/main/LICENSE). Vous pouvez donc le consulter, le modifier et le redistribuer librement, à condition de respecter les termes de la licence.
+Le code source du site Web est disponible sur [GitHub](/https://github.com/Le-JDL-La-Roche/Match-Manager-Client) sous licence [GNU GPLv3](https://github.com/Le-JDL-La-Roche/Match-Manager-Client/blob/main/LICENSE). Vous pouvez donc le consulter, le modifier et le redistribuer librement, à condition de respecter les termes de la licence.
 
 En cas de problème/bug/suggestion, vous pouvez [ouvrir une issue](https://github.com/Le-JDL-La-Roche/Match-Manager-Client/issues) sur GitHub.
