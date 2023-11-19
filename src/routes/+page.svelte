@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Coupe Jules Rimet</title>
+</svelte:head>
+
 <section class="home">
   <div class="home-content">
     <h1>Coupe Jules Rimet</h1>
@@ -20,7 +24,26 @@
 
 <section class="about">
   <div class="content">
-    <h2>A propos de la CJR</h2>
+    <h3>À propos de la CJR</h3>
+
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio magnam neque id ab in, adipisci repellendus obcaecati!
+      Blanditiis fugit illum quaerat, id eligendi, repellat fuga perspiciatis quibusdam maxime odio culpa.<br />
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat magnam distinctio neque nesciunt quae commodi qui reiciendis
+      sequi, corrupti, nostrum repudiandae vero ab nulla labore voluptatum dolorem eveniet. Ab, perspiciatis. Lorem ipsum dolor, sit
+      amet consectetur adipisicing elit. Dolore quasi corrupti eius mollitia quos ducimus natus, quae, labore aliquid error voluptates
+      facilis ipsum magni, eveniet pariatur repellendus odio nesciunt dolorem.
+    </p>
+
+    <h3>Photos</h3>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </section>
 
@@ -55,11 +78,18 @@
     margin-right: 30px;
     display: inline-block;
     width: 190px;
+    // outline-offset: 7px;
+    // outline-width: 4px;
 
     i {
       display: block;
       font-size: 48px;
       margin-bottom: 20px;
     }
+  }
+
+  div.content {
+    margin-top: 75px;
+    margin-bottom: 50px;
   }
 </style>
