@@ -5,7 +5,7 @@
   <table>
     <thead>
       <tr>
-        <th style="width: 100%">Nom</th>
+        <th style="width: 385px">Nom</th>
         <th />
       </tr>
     </thead>

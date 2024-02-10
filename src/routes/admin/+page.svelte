@@ -3,6 +3,7 @@
   import SchoolsCard from '$components/actions/SchoolsCard.svelte'
   import TeamsCard from '$components/actions/TeamsCard.svelte'
   import TournamentCard from '$components/actions/TournamentCard.svelte'
+  import MatchsCard from '$components/actions/MatchsCard.svelte'
 
   export let data: PageData
 </script>
@@ -14,6 +15,9 @@
 <div class="content">
   <h2>Espace administrateur</h2>
 
+  <div class="admin">
+    <MatchsCard />
+  </div>
   <div class="admin">
     <TournamentCard />
   </div>

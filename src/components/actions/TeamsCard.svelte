@@ -6,7 +6,7 @@
     <thead>
       <tr>
         <th style="width: calc(385px / 2 - 80px)">Nom</th>
-        <th style="width: calc(385px / 2 - 60px)">École</th>
+        <th style="width: 242px">École</th>
         <th />
       </tr>
     </thead>

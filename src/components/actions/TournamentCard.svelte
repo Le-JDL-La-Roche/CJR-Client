@@ -31,8 +31,6 @@
 
     g = svg.append('g')
 
-    // Ajoutez ici le code pour créer le contenu du SVG
-    // Par exemple, pour créer un rectangle :
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 8 / Math.pow(2, i); j++) {
         addRectangle(i * 350, Math.pow(2, i) * j * 160 + 40 * (Math.pow(2, i) - 1))
@@ -40,30 +38,6 @@
         addBracket(i * 350 + 200, Math.pow(2, i) * j * 160, Math.pow(2, i))
       }
     }
-
-    // for (let i = 0; i < 8; i++) {
-    //   addRectangle(0, i * 160 + 0)
-    //   addRectangle(0, i * 160 + 80)
-    //   addBracket(200, i * 160, 1)
-    // }
-
-    // for (let i = 0; i < 4; i++) {
-    //   addRectangle(350, i * 320 + 40)
-    //   addRectangle(350, i * 320 + 200)
-    //   addBracket(550, i * 320, 2)
-    // }
-
-    // for (let i = 0; i < 2; i++) {
-    //   addRectangle(700, i * 640 + 120)
-    //   addRectangle(700, i * 640 + 440)
-    //   addBracket(900, i * 640, 4)
-    // }
-
-    // for (let i = 0; i < 1; i++) {
-    //   addRectangle(1050, 280)
-    //   addRectangle(1050, 920)
-    //   addBracket(1250, 0, 8)
-    // }
 
     addRectangle(1400, 600)
   })
