@@ -101,6 +101,11 @@ button {
     &:hover {
       background-color: var(--primary-color-hover);
     }
+
+    &:disabled {
+      background-color: #a0a0a0;
+      cursor: not-allowed;
+    }
   }
 
   &.secondary {

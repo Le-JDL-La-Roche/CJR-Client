@@ -5,10 +5,10 @@ import { Buffer } from 'buffer'
 import { api } from '$services/store'
 
 export default class ApiAuthService {
-  async getAuth(name: string, password: string) {
+  async getAuth(username: string, password: string) {
     const req: RequestInit = {
       headers: {
-        Authorization: 'Basic ' + Buffer.from(name + ':' + password).toString('base64')
+        Authorization: 'Basic ' + Buffer.from(username + ':' + password).toString('base64')
       }
     }
     return await http.get<DataHttpResponse<{ jwt: string }>>(`${api}/auth`, req)
