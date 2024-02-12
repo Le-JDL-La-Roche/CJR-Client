@@ -10,8 +10,6 @@
 
   const apiSchools = new ApiSchoolsService()
 
-  const map = ['', 'Collège', 'Lycée']
-
   let error = ''
 
   $: if (show) {
@@ -31,15 +29,19 @@
   }
 
   async function deleteSchool() {
-    ;(await apiSchools.deleteSchool(school.id || 0)).subscribe({
-      next: (res) => {
-        data.schools = res.body.data?.schools || []
-        show = false
-      },
-      error: (err) => {
-        error = err.body.message
-      }
-    })
+    if (confirm('Voulez-vous supprimer cette école ?\nLes équipes et matchs associés seront également supprimés.')) {
+      ;(await apiSchools.deleteSchool(school.id || 0)).subscribe({
+        next: (res) => {
+          data.schools = res.body.data?.schools || []
+          data.teams = res.body.data?.teams || []
+          data.matches = res.body.data?.matches || []
+          show = false
+        },
+        error: (err) => {
+          error = err.body.message
+        }
+      })
+    }
   }
 </script>
 

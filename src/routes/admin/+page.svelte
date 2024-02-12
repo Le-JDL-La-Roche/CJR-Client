@@ -34,7 +34,7 @@
   </div>
   <div class="admin">
     <SchoolsCard bind:data />
-    <TeamsCard />
+    <TeamsCard bind:data />
   </div>
   <div class="admin">
     <AgendaCard />

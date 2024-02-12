@@ -131,10 +131,9 @@ class Http {
     if (response.body.code == 'AUTH_ERROR') {
       if (
         (url.includes('/verify') || response.body.message == 'Token expired') &&
-        window.location.pathname != '/admin' &&
         window.location.pathname.includes('/admin')
       ) {
-        redirect(300, '/admin');
+        redirect(300, '/connexion');
       }
     } else if (response.body.code == 'DB_ERROR') {
       // TODO: Handle DB errors

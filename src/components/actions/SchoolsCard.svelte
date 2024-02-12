@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { School } from '$models/features/school.model'
   import EditSchoolModal from '$components/modals/EditSchoolModal.svelte'
   import type { PageData } from '../../routes/admin/$types'
   import AddSchoolModal from '$components/modals/AddSchoolModal.svelte'
@@ -20,12 +19,10 @@
   let showAddModal = false
   let showEditModal = false
   let editSchoolId: number
-
-  function edit(id: number) {}
 </script>
 
 <div class="card">
-  <button class="primary add" on:click={() => showAddModal = true}><i class="fa-solid fa-plus" /></button>
+  <button class="primary add" on:click={() => (showAddModal = true)}><i class="fa-solid fa-plus" /></button>
   <h4>Écoles</h4>
 
   <table>
@@ -38,15 +35,17 @@
     <tbody>
       {#each data.schools as school, i}
         <tr>
-          <td>{map.short[school.category]} {school.name}</td>
+          <td>{map.long[school.category]} {school.name}</td>
           <td>
             <button
               class="secondary"
               on:click={() => {
                 editSchoolId = i
                 showEditModal = true
-              }}><i class="fa-solid fa-gear" /></button
+              }}
             >
+              <i class="fa-solid fa-gear" />
+            </button>
           </td>
         </tr>
       {/each}
