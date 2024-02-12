@@ -90,7 +90,7 @@ button {
 
   &.primary {
     display: block;
-    margin-top: 35px;
+    margin-top: 30px;
     padding: 12px 15px;
     border: 0;
     outline: none;
@@ -130,7 +130,11 @@ button {
   }
 }
 
-input:not([type=checkbox]):not([type=radio]) {
+label {
+  font-size: 14px;
+}
+
+input:not([type=checkbox]):not([type=radio]), select {
   display: block;
   width: calc(100% - 30px);
   padding: 12px 15px;
@@ -149,5 +153,15 @@ input:not([type=checkbox]):not([type=radio]) {
 
   &:focus {
     background-color: #85858570;
+  }
+}
+
+select {
+  padding: 10px 15px;
+  width: 100%;
+
+  option {
+    background-color: #46464a;
+    padding: 10px;
   }
 }

@@ -3,9 +3,19 @@
   import SchoolsCard from '$components/actions/SchoolsCard.svelte'
   import TeamsCard from '$components/actions/TeamsCard.svelte'
   import TournamentCard from '$components/actions/TournamentCard.svelte'
-  import MatchsCard from '$components/actions/MatchsCard.svelte'
+  import MatchesCard from '$components/actions/MatchesCard.svelte'
+  import CookiesService from '$services/cookies.service'
+  import AgendaCard from '$components/actions/AgendaCard.svelte'
+  import { goto } from '$app/navigation'
 
   export let data: PageData
+
+  const cookies = new CookiesService()
+
+  function logout() {
+    cookies.delete('JWT')
+    goto('/')
+  }
 </script>
 
 <svelte:head>
@@ -13,17 +23,21 @@
 </svelte:head>
 
 <div class="content">
+  <button class="secondary logout" on:click={logout}><i class="fa-solid fa-right-from-bracket" />&nbsp;&nbsp;Déconnexion</button>
   <h2>Espace administrateur</h2>
 
   <div class="admin">
-    <MatchsCard />
+    <MatchesCard />
   </div>
   <div class="admin">
     <TournamentCard />
   </div>
   <div class="admin">
-    <SchoolsCard />
+    <SchoolsCard bind:data />
     <TeamsCard />
+  </div>
+  <div class="admin">
+    <AgendaCard />
   </div>
 </div>
 
@@ -36,6 +50,16 @@
 
     &:nth-of-type(1) {
       margin-top: 50px;
+    }
+  }
+
+  button.logout {
+    margin-top: 10px;
+    float: right;
+    background: #5c3939;
+
+    &:hover {
+      background: #5c3b39;
     }
   }
 </style>

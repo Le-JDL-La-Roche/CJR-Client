@@ -1,19 +1,20 @@
 import adapter from '@sveltejs/adapter-node'
 import preprocess from 'svelte-preprocess'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: preprocess({
     scss: {
-      includePaths: ['assets/']
+      includePaths: ['public/assets/sass/']
     }
   }),
 
   kit: {
     adapter: adapter(),
     alias: {
-      $assets: './assets',
-      '$assets/*': './assets/*',
+      // $assets: './src/assets',
+      // '$assets/*': './src/assets/*',
 
       $services: './src/services',
       '$services/*': './src/services/*',
@@ -28,3 +29,4 @@ const config = {
 }
 
 export default config
+

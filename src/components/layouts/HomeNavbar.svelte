@@ -2,7 +2,9 @@
   <nav>
     <ul>
       <div class="links">
-        <li class="home"><a href="/" class="not"><img class="fav" src="/assets/img/fav.png" alt="Favicon" />Coupe Jules Rimet</a></li>
+        <li class="home">
+          <a href="/" class="not"><img class="fav" src="/assets/img/fav.png" alt="Favicon" />Coupe Jules Rimet</a>
+        </li>
         <li class="link"><a href="/" class="not">Tournoi</a></li>
         <li class="link"><a href="/" class="not">Équipes</a></li>
         <li class="link"><a href="/" class="not">Replays</a></li>
@@ -17,7 +19,7 @@
         </li>
         <li>
           <div class="separator" />
-          <a href="/connexion" class="not"><button class="secondary"><i class="fa-solid fa-right-to-bracket" /></button></a>
+          <a href="/connexion" class="not"><button class="secondary"><i class="fa-solid fa-gear" /></button></a>
         </li>
       </div>
     </ul>

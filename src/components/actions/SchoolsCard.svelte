@@ -1,5 +1,31 @@
+<script lang="ts">
+  import type { School } from '$models/features/school.model'
+  import EditSchoolModal from '$components/modals/EditSchoolModal.svelte'
+  import type { PageData } from '../../routes/admin/$types'
+  import AddSchoolModal from '$components/modals/AddSchoolModal.svelte'
+
+  export let data: PageData
+
+  const map = {
+    short: {
+      C: 'COL',
+      L: 'LYC'
+    },
+    long: {
+      C: 'Collège',
+      L: 'Lycée'
+    }
+  }
+
+  let showAddModal = false
+  let showEditModal = false
+  let editSchoolId: number
+
+  function edit(id: number) {}
+</script>
+
 <div class="card">
-  <button class="primary add"><i class="fa-solid fa-plus" /></button>
+  <button class="primary add" on:click={() => showAddModal = true}><i class="fa-solid fa-plus" /></button>
   <h4>Écoles</h4>
 
   <table>
@@ -10,55 +36,26 @@
       </tr>
     </thead>
     <tbody>
-      <!-- {#each schools as school}
-            <tr>
-              <td>{school.name}</td>
-              <td>{school.teams.length}</td>
-            </tr>
-            {/each} -->
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>La Rochefoucauld</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
+      {#each data.schools as school, i}
+        <tr>
+          <td>{map.short[school.category]} {school.name}</td>
+          <td>
+            <button
+              class="secondary"
+              on:click={() => {
+                editSchoolId = i
+                showEditModal = true
+              }}><i class="fa-solid fa-gear" /></button
+            >
+          </td>
+        </tr>
+      {/each}
     </tbody>
   </table>
 </div>
+
+<EditSchoolModal bind:show={showEditModal} bind:data school={data.schools[editSchoolId]} />
+<AddSchoolModal bind:show={showAddModal} bind:data />
 
 <style lang="scss">
   @import url('/assets/sass/cards.scss');
