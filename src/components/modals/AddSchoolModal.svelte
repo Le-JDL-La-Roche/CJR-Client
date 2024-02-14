@@ -42,13 +42,13 @@
     <h4>Ajouter une école</h4>
 
     <label for="category">Collège/Lycée :</label>
-    <select name="category" id="category" bind:value={school.category}>
+    <select name="category" bind:value={school.category}>
       <option value="C">Collège</option>
       <option value="L">Lycée</option>
     </select>
 
     <label for="name">Nom de l'école :</label>
-    <input type="text" bind:value={school.name} id="name" />
+    <input type="text" bind:value={school.name} />
 
     <p class="error">{error}</p>
 

@@ -57,7 +57,7 @@
 <AddSchoolModal bind:show={showAddModal} bind:data />
 
 <style lang="scss">
-  @import url('/assets/sass/cards.scss');
+  @use '../../../static/assets/sass/cards.scss';
 
   table {
     tbody {

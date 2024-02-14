@@ -5,7 +5,7 @@
         <li class="home">
           <a href="/" class="not"><img class="fav" src="/assets/img/fav.png" alt="Favicon" />Coupe Jules Rimet</a>
         </li>
-        <li class="link"><a href="/" class="not">Tournoi</a></li>
+        <li class="link"><a href="/" class="not">Tournois</a></li>
         <li class="link"><a href="/" class="not">Équipes</a></li>
         <li class="link"><a href="/" class="not">Replays</a></li>
         <li class="link"><a href="/" class="not">Agenda</a></li>
@@ -42,6 +42,7 @@
       padding: 0;
       display: flex;
       gap: 10px;
+      line-height: 1 !important;
 
       div.links {
         width: calc(100% - 140px);

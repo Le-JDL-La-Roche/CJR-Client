@@ -46,7 +46,6 @@
     if (teammatesLength > team.teammates.length) {
       for (let i = team.teammates.length; i < teammatesLength; i++) {
         team.teammates.push({ name: '', captain: i === 0, substitute: false, imageId: '' })
-        console.log(team.teammates)
       }
     } else {
       while (teammatesLength < team.teammates.length) {
@@ -76,16 +75,23 @@
   <form on:submit|preventDefault={submit}>
     <h4>Ajouter une équipe</h4>
 
-    <label for="category">École :</label>
-    <select name="category" id="category" bind:value={team.school}>
+    <label for="school">École :</label>
+    <select name="school" bind:value={team.school}>
       <option value={0} disabled>-- Sélectionner --</option>
-      {#each d.schools as school}
-        <option value={school.id}>{map.long[school.category]} {school.name}</option>
-      {/each}
+      <optgroup label="Collèges" style="background: #46464a; color: #c0c0c4">
+        {#each d.schools.filter((s) => s.category === 'C') as school}
+          <option value={school.id}>{map.long[school.category]} {school.name}</option>
+        {/each}
+      </optgroup>
+      <optgroup label="Lycées" style="background: #46464a; color: #c0c0c4">
+        {#each d.schools.filter((s) => s.category === 'L') as school}
+          <option value={school.id}>{map.long[school.category]} {school.name}</option>
+        {/each}
+      </optgroup>
     </select>
 
     <label for="name">Nom de l'équipe :</label>
-    <input type="text" bind:value={team.name} id="name" />
+    <input type="text" bind:value={team.name} />
 
     <label for="teammates">
       Équipiers :&nbsp;&nbsp;

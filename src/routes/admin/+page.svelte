@@ -27,10 +27,10 @@
   <h2>Espace administrateur</h2>
 
   <div class="admin">
-    <MatchesCard />
+    <MatchesCard bind:data />
   </div>
   <div class="admin">
-    <TournamentCard />
+    <TournamentCard bind:data />
   </div>
   <div class="admin">
     <SchoolsCard bind:data />

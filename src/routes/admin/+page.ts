@@ -8,10 +8,12 @@ import { error } from '@sveltejs/kit'
 import type { Team } from '$models/features/team.model'
 import type { Match } from '$models/features/match.model'
 import ApiTeamsService from '$services/api/api-teams.service'
+import ApiMatchesService from '$services/api/api-matches.service'
 
 const apiAuth = new ApiAuthService()
 const apiSchools = new ApiSchoolsService()
 const apiTeams = new ApiTeamsService()
+const apiMatches = new ApiMatchesService()
 const cookies = new CookiesService()
 
 export const load: PageLoad = async () => {
@@ -45,7 +47,6 @@ export const load: PageLoad = async () => {
       teams.forEach((team, i) => {
         teams[i].teammates = JSON.parse(team.teammates as unknown as string)
       })
-      console.log(teams)
     },
     error: (err) => {
       throw error(err.status, err.body.message)
@@ -53,6 +54,15 @@ export const load: PageLoad = async () => {
   })
 
   let matches: Match[] = []
+
+  ;(await apiMatches.getMatches()).subscribe({
+    next: (res) => {
+      matches = res.body.data?.matches || []
+    },
+    error: (err) => {
+      throw error(err.status, err.body.message)
+    }
+  })
 
   return { schools, teams, matches }
 }

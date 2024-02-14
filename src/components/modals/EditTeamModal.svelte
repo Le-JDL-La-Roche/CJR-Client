@@ -87,15 +87,15 @@
   <form on:submit|preventDefault={submit}>
     <h4>Modifier l'équipe</h4>
 
-    <label for="category">École :</label>
-    <select name="category" id="category" bind:value={team.school}>
+    <label for="school">École :</label>
+    <select name="school" bind:value={team.school}>
       {#each d.schools as school}
         <option value={school.id}>{map.long[school.category]} {school.name}</option>
       {/each}
     </select>
 
     <label for="name">Nom de l'équipe :</label>
-    <input type="text" bind:value={team.name} id="name" />
+    <input type="text" bind:value={team.name} />
 
     <label for="teammates">
       Équipiers :&nbsp;&nbsp;
@@ -145,7 +145,7 @@
     <p class="error">{error}</p>
 
     <div class="actions">
-      <button class="secondary" type="button" on:click={() => deleteTeam()}>Supprimer</button>
+      <button class="secondary" type="button" on:click={deleteTeam}>Supprimer</button>
       <button class="primary">Sauvegarder</button>
     </div>
   </form>

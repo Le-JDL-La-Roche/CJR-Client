@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { School } from '$models/features/school.model'
   import EditTeamModal from '$components/modals/EditTeamModal.svelte'
   import type { PageData } from '../../routes/admin/$types'
   import AddTeamModal from '$components/modals/AddTeamModal.svelte'
@@ -63,7 +62,7 @@
 <AddTeamModal bind:show={showAddModal} bind:data />
 
 <style lang="scss">
-  @import url('/assets/sass/cards.scss');
+  @use '../../../static/assets/sass/cards.scss';
 
   table {
     tbody {

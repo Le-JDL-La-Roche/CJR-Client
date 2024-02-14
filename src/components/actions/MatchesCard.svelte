@@ -1,5 +1,30 @@
-<div class="card"  style="height: 400px">
-  <button class="primary add"><i class="fa-solid fa-plus" /></button>
+<script lang="ts">
+  import EditTeamModal from '$components/modals/EditTeamModal.svelte'
+  import type { PageData } from '../../routes/admin/$types'
+  import AddTeamModal from '$components/modals/AddTeamModal.svelte'
+  import EditMatchModal from '$components/modals/EditMatchModal.svelte'
+
+  export let data: PageData
+
+  const map = {
+    short: {
+      C: 'COL',
+      L: 'LYC'
+    },
+    long: {
+      C: 'Collège',
+      L: 'Lycée'
+    }
+  }
+
+  let allowChangeTeams = false
+  let category: 'C' | 'L' | undefined = undefined
+  let showEditModal = false
+  let tree: number
+</script>
+
+<div class="card" style="height: 400px">
+  <!-- <button class="primary add"><i class="fa-solid fa-plus" /></button> -->
   <h4>Matchs</h4>
 
   <table>
@@ -12,82 +37,73 @@
       </tr>
     </thead>
     <tbody>
-      <!-- {#each schools as school}
-            <tr>
-              <td>{school.name}</td>
-              <td>{school.teams.length}</td>
-            </tr>
-            {/each} -->
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
-      <tr>
-        <td>France (La Rochefoucauld)</td>
-        <td>–</td>
-        <td>France (La Rochefoucauld)</td>
-        <td>01/01/2024, 12:05</td>
-        <td>1</td>
-        <td><button class="secondary"><i class="fa-solid fa-gear" /></button></td>
-      </tr>
+      {#each data.matches as match}
+        <tr style={match.score1 || match.score2 ? 'opacity: 0.5' : ''}>
+          <td>
+            {(data.teams.find((team) => team.id === match.team1) || data.teams[0]).name}
+            ({map.short[
+              data.schools.find(
+                (school) => school.id === (data.teams.find((team) => team.id === match.team1) || data.teams[0]).school
+              )?.category || 'C'
+            ]}
+            {(
+              data.schools.find(
+                (school) => school.id === (data.teams.find((team) => team.id === match.team1) || data.teams[0]).school
+              ) || data.schools[0]
+            ).name})
+          </td>
+          <td>–</td>
+          <td>
+            {(data.teams.find((team) => team.id === match.team2) || data.teams[0]).name}
+            ({map.short[
+              data.schools.find(
+                (school) => school.id === (data.teams.find((team) => team.id === match.team2) || data.teams[0]).school
+              )?.category || 'C'
+            ]}
+            {(
+              data.schools.find(
+                (school) => school.id === (data.teams.find((team) => team.id === match.team2) || data.teams[0]).school
+              ) || data.schools[0]
+            ).name})
+          </td>
+          <td>
+            {new Date(match.fromDate).toLocaleDateString('fr-FR', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </td>
+          <td>{match.field}</td>
+          <td>
+            <button
+              class="secondary"
+              on:click={() => {
+                tree = match.tree || 0
+                category = match.category
+                if (tree < 16) allowChangeTeams = true
+                else allowChangeTeams = false
+                showEditModal = true
+              }}
+            >
+              {#if match.score1 || match.score2}
+                <i class="fa-solid fa-circle-info" />
+              {:else}
+                <i class="fa-solid fa-gear" />
+              {/if}
+            </button>
+          </td>
+        </tr>
+      {/each}
     </tbody>
   </table>
 </div>
 
+<EditMatchModal bind:show={showEditModal} bind:data bind:allowChangeTeams bind:category bind:tree />
+
 <style lang="scss">
-  @import url('/assets/sass/cards.scss');
+  @use '../../../static/assets/sass/cards.scss';
 
   table {
     tbody {

@@ -34,6 +34,9 @@
         next: (res) => {
           data.schools = res.body.data?.schools || []
           data.teams = res.body.data?.teams || []
+          data.teams.forEach((team, i) => {
+            data.teams[i].teammates = JSON.parse(team.teammates as unknown as string)
+          })
           data.matches = res.body.data?.matches || []
           show = false
         },
@@ -50,18 +53,18 @@
     <h4>Modifier l'école</h4>
 
     <label for="category">Collège/Lycée :</label>
-    <select name="category" id="category" bind:value={school.category}>
+    <select name="category" bind:value={school.category}>
       <option value="C">Collège</option>
       <option value="L">Lycée</option>
     </select>
 
     <label for="name">Nom de l'école :</label>
-    <input type="text" bind:value={school.name} id="name" />
+    <input type="text" bind:value={school.name} />
 
     <p class="error">{error}</p>
 
     <div class="actions">
-      <button class="secondary" type="button" on:click={() => deleteSchool()}>Supprimer</button>
+      <button class="secondary" type="button" on:click={deleteSchool}>Supprimer</button>
       <button class="primary">Sauvegarder</button>
     </div>
   </form>
