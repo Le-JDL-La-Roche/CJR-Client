@@ -1,30 +1,28 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import * as d3 from 'd3'
-  import type { Selection, BaseType, ZoomBehavior, ZoomedElementBaseType, D3ZoomEvent, ZoomTransform } from 'd3'
-  import AddMatchModal from '$components/modals/AddMatchModal.svelte'
+  import type { Selection, BaseType, ZoomedElementBaseType, D3ZoomEvent } from 'd3'
   import type { PageData } from '../../routes/admin/$types'
-  import EditMatchModal from '$components/modals/EditMatchModal.svelte'
+  import type { Match } from '$models/features/match.model'
+  import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
 
   export let data: PageData
 
   let svgC: Selection<SVGSVGElement, unknown, BaseType, unknown>
   let gC: Selection<SVGGElement, unknown, BaseType, unknown>
-  let iC = 0
-  let jC = 0
+  let iC: number
+  let jC: number
 
   let svgL: Selection<SVGSVGElement, unknown, BaseType, unknown>
   let gL: Selection<SVGGElement, unknown, BaseType, unknown>
-  let iL = 0
-  let jL = 0
+  let iL: number
+  let jL: number
 
-  let showAddModal = false
-  let showEditModal = false
-  let editMatch: number
+  let showModal = false
   let allowChangeTeams = false
-  let tree: number | undefined = undefined
-
+  let tree: number
   let category: 'C' | 'L' = 'C'
+  let m: Match | undefined = undefined
 
   onMount(() => {
     const containerWidth = 1120
@@ -32,22 +30,22 @@
     const svgWidth = 1700
     const svgHeight = 1250
 
-    const zoomC: ZoomBehavior<ZoomedElementBaseType, unknown> = d3
+    const zoomC = d3
       .zoom()
-      .scaleExtent([1, 1]) // Désactive le zoom
+      .scaleExtent([1, 1])
       .translateExtent([
         [0, 0],
         [svgWidth, svgHeight]
-      ]) // Limite le déplacement
+      ])
       .on('zoom', zoomedC)
 
-    const zoomL: ZoomBehavior<ZoomedElementBaseType, unknown> = d3
+    const zoomL = d3
       .zoom()
-      .scaleExtent([1, 1]) // Désactive le zoom
+      .scaleExtent([1, 1])
       .translateExtent([
         [0, 0],
         [svgWidth, svgHeight]
-      ]) // Limite le déplacement
+      ])
       .on('zoom', zoomedL)
 
     svgC = d3
@@ -66,9 +64,25 @@
       .style('cursor', 'move')
       .call(zoomL as any)
 
+    init()
+  })
+
+  $: if (data) {
+    if (gC && gL) {
+      gC.selectAll('*').remove()
+      gL.selectAll('*').remove()
+      init()
+    }
+  }
+
+  function init() {
     gC = svgC.append('g')
+    iC = 0
+    jC = 0
 
     gL = svgL.append('g')
+    iL = 0
+    jL = 0
 
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 8 / Math.pow(2, i); j++) {
@@ -87,38 +101,6 @@
       }
     }
     addRectangle(1400, 600, 'L')
-  })
-
-  $: if (data) {
-    if (gC && gL) {
-      gC.selectAll('*').remove()
-      gC = svgC.append('g')
-      iC = 0
-      jC = 0
-
-      gL.selectAll('*').remove()
-      gL = svgL.append('g')
-      iL = 0
-      jL = 0
-
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 8 / Math.pow(2, i); j++) {
-          addRectangle(i * 350, Math.pow(2, i) * j * 160 + 40 * (Math.pow(2, i) - 1), 'C')
-          addRectangle(i * 350, Math.pow(2, i) * j * 160 + 60 * Math.pow(2, i + 1) - 40, 'C')
-          addBracket(i * 350 + 200, Math.pow(2, i) * j * 160, Math.pow(2, i), 'C')
-        }
-      }
-      addRectangle(1400, 600, 'C')
-
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 8 / Math.pow(2, i); j++) {
-          addRectangle(i * 350, Math.pow(2, i) * j * 160 + 40 * (Math.pow(2, i) - 1), 'L')
-          addRectangle(i * 350, Math.pow(2, i) * j * 160 + 60 * Math.pow(2, i + 1) - 40, 'L')
-          addBracket(i * 350 + 200, Math.pow(2, i) * j * 160, Math.pow(2, i), 'L')
-        }
-      }
-      addRectangle(1400, 600, 'L')
-    }
   }
 
   function addRectangle(x: number, y: number, cat: 'C' | 'L') {
@@ -190,16 +172,17 @@
       .style('fill', '#f5f5f5')
       .style('cursor', 'pointer')
       .on('click', (e) => {
-        if (data.matches.find((match) => match.tree === +e.target.id.split('-')[1] && match.category === category)) {
-          tree = +e.target.id.split('-')[1]
-          if (tree < 16) allowChangeTeams = true
-          else allowChangeTeams = false
-          showEditModal = true
+        let match = data.matches.find((match) => match.tree === +e.target.id.split('-')[1] && match.category === category)
+        if (match) {
+          tree = match.tree
+          allowChangeTeams = tree < 16
+          m = match
+          showModal = true
         } else {
           tree = +e.target.id.split('-')[1]
-          if (tree < 16) allowChangeTeams = true
-          else allowChangeTeams = false
-          showAddModal = true
+          allowChangeTeams = tree < 16
+          m = undefined
+          showModal = true
         }
       })
       .on('mouseover', function () {
@@ -209,7 +192,6 @@
         d3.select(this).style('fill', '#f5f5f5')
       })
 
-    // add scores text, if score1 or score2 is not null
     let match = data.matches.find((match) => match.tree === j && match.category === cat)
     if (match && (match.score1 || match.score2)) {
       ;(cat === 'C' ? gC : gL)
@@ -312,8 +294,7 @@
   <div id="tournament-l" style="display: {category === 'L' ? 'block' : 'none'}" />
 </div>
 
-<EditMatchModal bind:show={showEditModal} bind:data bind:allowChangeTeams bind:category bind:tree />
-<AddMatchModal bind:show={showAddModal} bind:data bind:allowChangeTeams bind:category bind:tree />
+<AddEditMatchModal bind:show={showModal} bind:data {allowChangeTeams} {category} {tree} match={m} />
 
 <style lang="scss">
   @use '../../../static/assets/sass/cards.scss';

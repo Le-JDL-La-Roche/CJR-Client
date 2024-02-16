@@ -1,28 +1,17 @@
 <script lang="ts">
-  import EditTeamModal from '$components/modals/EditTeamModal.svelte'
   import type { PageData } from '../../routes/admin/$types'
-  import AddTeamModal from '$components/modals/AddTeamModal.svelte'
+  import utils from '$services/utils'
+  import AddEditTeamModal from '$components/modals/AddEditTeamModal.svelte'
+  import type { Team } from '$models/features/team.model'
 
   export let data: PageData
 
-  const map = {
-    short: {
-      C: 'COL',
-      L: 'LYC'
-    },
-    long: {
-      C: 'Collège',
-      L: 'Lycée'
-    }
-  }
-
-  let showAddModal = false
-  let showEditModal = false
-  let editTeamId: number
+  let showModal = false
+  let t: Team | undefined = undefined
 </script>
 
 <div class="card">
-  <button class="primary add" on:click={() => (showAddModal = true)}><i class="fa-solid fa-plus" /></button>
+  <button class="primary add" on:click={() => {t = undefined; showModal = true}}><i class="fa-solid fa-plus" /></button>
   <h4>Équipes</h4>
 
   <table>
@@ -34,19 +23,19 @@
       </tr>
     </thead>
     <tbody>
-      {#each data.teams as team, i}
+      {#each data.teams as team}
         <tr>
           <td>{team.name}</td>
           <td>
-            {map.short[data.schools.find((school) => school.id === team.school)?.category || 'C']}
+            {utils.map.short[data.schools.find((school) => school.id === team.school)?.category || 'C']}
             {(data.schools.find((school) => school.id === team.school) || data.schools[0]).name}
           </td>
           <td>
             <button
               class="secondary"
               on:click={() => {
-                editTeamId = i
-                showEditModal = true
+                t = team
+                showModal = true
               }}
             >
               <i class="fa-solid fa-gear" />
@@ -58,8 +47,7 @@
   </table>
 </div>
 
-<EditTeamModal bind:show={showEditModal} bind:data team={data.teams[editTeamId]} />
-<AddTeamModal bind:show={showAddModal} bind:data />
+<AddEditTeamModal bind:show={showModal} bind:data team={t} />
 
 <style lang="scss">
   @use '../../../static/assets/sass/cards.scss';

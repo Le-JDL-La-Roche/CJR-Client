@@ -10,7 +10,6 @@ export const load: PageLoad = async () => {
   if (cookies.get('JWT')) {
     ;(await apiAuth.getVerify()).subscribe({
       next: () => {
-        console.log('hello')
         goto('/admin')
       },
       error: () => {

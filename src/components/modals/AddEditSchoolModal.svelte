@@ -6,20 +6,35 @@
 
   export let show: boolean
   export let data: PageData
-  export let school: School
+  export let school: School | undefined
 
   const apiSchools = new ApiSchoolsService()
 
-  let error = ''
+  let name: string
+  let category: 'C' | 'L' | 0
 
-  $: if (show) {
+  let error: string
+
+  $: if (show) update()
+
+  $: s = { category, name } as School
+
+  function update() {
     error = ''
+    if (school) {
+      name = school.name
+      category = school.category
+    } else {
+      name = ''
+      category = 0
+    }
   }
 
   async function submit() {
-    ;(await apiSchools.putSchool(school, school.id || 0)).subscribe({
+    const exec = school ? apiSchools.putSchool : apiSchools.postSchool
+    ;(await exec(s, school ? school.id! : 0)).subscribe({
       next: (res) => {
-        data.schools = res.body.data?.schools || []
+        data.schools = res.body.data!.schools
         show = false
       },
       error: (err) => {
@@ -28,16 +43,13 @@
     })
   }
 
-  async function deleteSchool() {
+  async function del() {
     if (confirm('Voulez-vous supprimer cette école ?\nLes équipes et matchs associés seront également supprimés.')) {
-      ;(await apiSchools.deleteSchool(school.id || 0)).subscribe({
+      ;(await apiSchools.deleteSchool(school!.id!)).subscribe({
         next: (res) => {
-          data.schools = res.body.data?.schools || []
-          data.teams = res.body.data?.teams || []
-          data.teams.forEach((team, i) => {
-            data.teams[i].teammates = JSON.parse(team.teammates as unknown as string)
-          })
-          data.matches = res.body.data?.matches || []
+          data.schools = res.body.data!.schools
+          data.teams = res.body.data!.teams
+          data.matches = res.body.data!.matches
           show = false
         },
         error: (err) => {
@@ -50,46 +62,29 @@
 
 <ModalTemplate size={'s'} bind:show>
   <form on:submit|preventDefault={submit}>
-    <h4>Modifier l'école</h4>
+    <h4>{school ? "Modifier l'école" : 'Ajouter une école'}</h4>
 
     <label for="category">Collège/Lycée :</label>
-    <select name="category" bind:value={school.category}>
+    <select name="category" bind:value={category}>
+      <option value={0} disabled>-- Sélectionner --</option>
       <option value="C">Collège</option>
       <option value="L">Lycée</option>
     </select>
 
     <label for="name">Nom de l'école :</label>
-    <input type="text" bind:value={school.name} />
+    <input type="text" bind:value={name} />
 
     <p class="error">{error}</p>
 
     <div class="actions">
-      <button class="secondary" type="button" on:click={deleteSchool}>Supprimer</button>
-      <button class="primary">Sauvegarder</button>
+      {#if school}
+        <button class="secondary" type="button" on:click={del}>Supprimer</button>
+      {/if}
+      <button class="primary">{school ? 'Sauvegarder' : 'Ajouter'}</button>
     </div>
   </form>
 </ModalTemplate>
 
 <style lang="scss">
   @use '../../../static/assets/sass/modal.scss';
-
-  div.actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 30px;
-
-    button {
-      flex: 1;
-      margin-top: 0px;
-
-      &.secondary {
-        background: #5c3939;
-
-        &:hover {
-          background: #5c3b39;
-        }
-      }
-    }
-  }
 </style>

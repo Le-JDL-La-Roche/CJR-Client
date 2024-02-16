@@ -1,26 +1,16 @@
 <script lang="ts">
-  import EditTeamModal from '$components/modals/EditTeamModal.svelte'
   import type { PageData } from '../../routes/admin/$types'
-  import AddTeamModal from '$components/modals/AddTeamModal.svelte'
-  import EditMatchModal from '$components/modals/EditMatchModal.svelte'
+  import utils from '$services/utils'
+  import type { Match } from '$models/features/match.model'
+  import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
 
   export let data: PageData
 
-  const map = {
-    short: {
-      C: 'COL',
-      L: 'LYC'
-    },
-    long: {
-      C: 'Collège',
-      L: 'Lycée'
-    }
-  }
-
   let allowChangeTeams = false
-  let category: 'C' | 'L' | undefined = undefined
-  let showEditModal = false
+  let category: 'C' | 'L'
   let tree: number
+  let showModal = false
+  let m: Match | undefined = undefined
 </script>
 
 <div class="card" style="height: 400px">
@@ -40,31 +30,21 @@
       {#each data.matches as match}
         <tr style={match.score1 || match.score2 ? 'opacity: 0.5' : ''}>
           <td>
-            {(data.teams.find((team) => team.id === match.team1) || data.teams[0]).name}
-            ({map.short[
-              data.schools.find(
-                (school) => school.id === (data.teams.find((team) => team.id === match.team1) || data.teams[0]).school
-              )?.category || 'C'
+            {data.teams.find((team) => team.id === match.team1)?.name}
+            ({utils.map.short[
+              data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.category ||
+                'C'
             ]}
-            {(
-              data.schools.find(
-                (school) => school.id === (data.teams.find((team) => team.id === match.team1) || data.teams[0]).school
-              ) || data.schools[0]
-            ).name})
+            {data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.name})
           </td>
           <td>–</td>
           <td>
-            {(data.teams.find((team) => team.id === match.team2) || data.teams[0]).name}
-            ({map.short[
-              data.schools.find(
-                (school) => school.id === (data.teams.find((team) => team.id === match.team2) || data.teams[0]).school
-              )?.category || 'C'
+            {data.teams.find((team) => team.id === match.team2)?.name}
+            ({utils.map.short[
+              data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.category ||
+                'C'
             ]}
-            {(
-              data.schools.find(
-                (school) => school.id === (data.teams.find((team) => team.id === match.team2) || data.teams[0]).school
-              ) || data.schools[0]
-            ).name})
+            {data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.name})
           </td>
           <td>
             {new Date(match.fromDate).toLocaleDateString('fr-FR', {
@@ -80,11 +60,12 @@
             <button
               class="secondary"
               on:click={() => {
-                tree = match.tree || 0
+                tree = match.tree
                 category = match.category
+                m = match
                 if (tree < 16) allowChangeTeams = true
                 else allowChangeTeams = false
-                showEditModal = true
+                showModal = true
               }}
             >
               {#if match.score1 || match.score2}
@@ -100,7 +81,7 @@
   </table>
 </div>
 
-<EditMatchModal bind:show={showEditModal} bind:data bind:allowChangeTeams bind:category bind:tree />
+<AddEditMatchModal bind:show={showModal} bind:data {allowChangeTeams} {category} {tree} match={m} />
 
 <style lang="scss">
   @use '../../../static/assets/sass/cards.scss';

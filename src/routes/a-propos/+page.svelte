@@ -22,6 +22,14 @@
     <li>La page <a href="/agenda">Agenda</a> permet de voir les matchs et évènements à venir.</li>
   </ul>
 
+  <h3>Données et cookies</h3>
+  <p>
+    En tant qu'utilisateur de ce site Web, aucune donnée personnelle n'est collectée.<br />
+    Le site de la Coupe Jules Rimet ne dépose aucun cookie sur votre terminal. Cependant, les services tiers utilisés par ce site Web
+    (notamment les intégrations YouTube) peuvent être amenés à déposer des cookies. Vous pouvez refuser ces cookies depuis les paramètres
+    de votre navigateur et/ou depuis les sites Web des services en question.
+  </p>
+
   <h3>Contact</h3>
   <p>Pour toute question, suggestion ou signalement de bug, vous pouvez nous contacter par :</p>
   <ul>

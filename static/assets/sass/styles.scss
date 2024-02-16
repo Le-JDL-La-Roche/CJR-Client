@@ -121,7 +121,7 @@ button {
     }
 
     &:disabled {
-      background-color: #80808040;
+      background-color: #50505040;
       cursor: not-allowed;
     }
   }
@@ -175,6 +175,33 @@ input[type=datetime-local] {
       background-color: #80808040;
       cursor: not-allowed;
     }
+}
+
+textarea {
+  display: block;
+  width: calc(100% - 30px);
+  padding: 12px 15px;
+  border: none;
+  outline: none;
+  background-color: #75757570;
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  transition: background-color 0.2s;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: #80808070;
+  }
+
+  &:focus {
+    background-color: #85858570;
+  }
+
+  &:disabled {
+    background-color: #80808040;
+    cursor: not-allowed;
+  }
 }
 
 select {

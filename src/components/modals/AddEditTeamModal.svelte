@@ -2,66 +2,60 @@
   import ModalTemplate from './ModalTemplate.svelte'
   import type { PageData } from '../../routes/admin/$types'
   import ApiTeamsService from '$services/api/api-teams.service'
-  import type { Team } from '$models/features/team.model'
+  import type { Team, Teammate } from '$models/features/team.model'
+  import utils from '$services/utils'
 
   export let show: boolean
   export let data: PageData
-
-  const d = data
+  export let team: Team | undefined
 
   const apiTeams = new ApiTeamsService()
 
-  const map = {
-    short: {
-      C: 'COL',
-      L: 'LYC'
-    },
-    long: {
-      C: 'Collège',
-      L: 'Lycée'
-    }
-  }
+  let name: string
+  let school: number
+  let teammates: Teammate[]
 
-  let error = ''
+  let teammatesLength: number
+  let error: string
 
-  let team: Team = {
-    school: 0,
-    name: '',
-    teammates: []
-  }
+  $: if (show) update()
 
-  let teammatesLength = 7
+  $: t = { school, name, teammates } as Team
 
-  $: if (show) {
+  function update() {
     error = ''
-    team = {
-      school: 0,
-      name: '',
-      teammates: []
+    if (team) {
+      name = team.name
+      school = team.school
+      teammates = team.teammates
+      teammatesLength = team.teammates.length
+    } else {
+      name = ''
+      school = 0
+      teammates = []
+      teammatesLength = 7
+      updateTeammates()
     }
-    teammatesLength = 7
   }
 
-  $: if (teammatesLength) {
-    if (teammatesLength > team.teammates.length) {
-      for (let i = team.teammates.length; i < teammatesLength; i++) {
-        team.teammates.push({ name: '', captain: i === 0, substitute: false, imageId: '' })
+  function updateTeammates() {
+    if (teammatesLength > teammates.length) {
+      for (let i = teammates.length; i < teammatesLength; i++) {
+        teammates.push({ name: '', captain: i === 0, substitute: false, imageId: '' })
       }
     } else {
-      while (teammatesLength < team.teammates.length) {
-        team.teammates.pop()
+      while (teammatesLength < teammates.length) {
+        teammates.pop()
       }
     }
-    team.teammates = team.teammates
+    teammates = teammates
   }
 
   async function submit() {
-    ;(await apiTeams.postTeam(team)).subscribe({
+    const exec = team ? apiTeams.putTeam : apiTeams.postTeam
+    ;(await exec(t, team ? team.id! : 0)).subscribe({
       next: (res) => {
         data.teams = res.body.data?.teams || []
-        data.teams.forEach((team, i) => {
-          data.teams[i].teammates = JSON.parse(team.teammates as unknown as string)
-        })
         show = false
       },
       error: (err) => {
@@ -69,29 +63,44 @@
       }
     })
   }
+
+  async function del() {
+    if (confirm('Voulez-vous supprimer cette équipe ?\nLes matchs associés seront également supprimés.')) {
+      ;(await apiTeams.deleteTeam(team!.id!)).subscribe({
+        next: (res) => {
+          data.teams = res.body.data!.teams
+          data.matches = res.body.data!.matches
+          show = false
+        },
+        error: (err) => {
+          error = err.body.message
+        }
+      })
+    }
+  }
 </script>
 
 <ModalTemplate size={'m'} bind:show>
   <form on:submit|preventDefault={submit}>
-    <h4>Ajouter une équipe</h4>
+    <h4>{team ? "Modifier l'équipe" : 'Ajouter une équipe'}</h4>
 
     <label for="school">École :</label>
-    <select name="school" bind:value={team.school}>
+    <select name="school" bind:value={school}>
       <option value={0} disabled>-- Sélectionner --</option>
       <optgroup label="Collèges" style="background: #46464a; color: #c0c0c4">
-        {#each d.schools.filter((s) => s.category === 'C') as school}
-          <option value={school.id}>{map.long[school.category]} {school.name}</option>
+        {#each data.schools.filter((s) => s.category === 'C') as school}
+          <option value={school.id}>{utils.map.long[school.category]} {school.name}</option>
         {/each}
       </optgroup>
       <optgroup label="Lycées" style="background: #46464a; color: #c0c0c4">
-        {#each d.schools.filter((s) => s.category === 'L') as school}
-          <option value={school.id}>{map.long[school.category]} {school.name}</option>
+        {#each data.schools.filter((s) => s.category === 'L') as school}
+          <option value={school.id}>{utils.map.long[school.category]} {school.name}</option>
         {/each}
       </optgroup>
     </select>
 
     <label for="name">Nom de l'équipe :</label>
-    <input type="text" bind:value={team.name} />
+    <input type="text" bind:value={name} />
 
     <label for="teammates">
       Équipiers :&nbsp;&nbsp;
@@ -100,10 +109,11 @@
         min="5"
         max="20"
         bind:value={teammatesLength}
+        on:click={updateTeammates}
         style="display: inline; width: 35px; margin-bottom: 10px;"
       />
     </label>
-    {#each team.teammates as teammate, i}
+    {#each teammates as teammate, i}
       <div class="teammate">
         <input
           style="display: inline; width: 350px; margin-right: 20px; margin-bottom: 10px;"
@@ -140,7 +150,10 @@
     <p class="error">{error}</p>
 
     <div class="actions">
-      <button class="primary">Ajouter</button>
+      {#if team}
+        <button class="secondary" type="button" on:click={del}>Supprimer</button>
+      {/if}
+      <button class="primary">{team ? 'Sauvegarder' : 'Ajouter '}</button>
     </div>
   </form>
 </ModalTemplate>
@@ -148,7 +161,23 @@
 <style lang="scss">
   @use '../../../static/assets/sass/modal.scss';
 
-  input:disabled {
-    cursor: not-allowed;
+  div.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 30px;
+
+    button {
+      flex: 1;
+      margin-top: 0px;
+
+      &.secondary {
+        background: #5c3939;
+
+        &:hover {
+          background: #5c3b39;
+        }
+      }
+    }
   }
 </style>

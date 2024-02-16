@@ -1,28 +1,23 @@
 <script lang="ts">
-  import EditSchoolModal from '$components/modals/EditSchoolModal.svelte'
   import type { PageData } from '../../routes/admin/$types'
-  import AddSchoolModal from '$components/modals/AddSchoolModal.svelte'
+  import type { School } from '$models/features/school.model'
+  import AddEditSchoolModal from '$components/modals/AddEditSchoolModal.svelte'
+  import utils from '$services/utils'
 
   export let data: PageData
 
-  const map = {
-    short: {
-      C: 'COL',
-      L: 'LYC'
-    },
-    long: {
-      C: 'Collège',
-      L: 'Lycée'
-    }
-  }
-
-  let showAddModal = false
-  let showEditModal = false
-  let editSchoolId: number
+  let showModal = false
+  let s: School | undefined = undefined
 </script>
 
 <div class="card">
-  <button class="primary add" on:click={() => (showAddModal = true)}><i class="fa-solid fa-plus" /></button>
+  <button
+    class="primary add"
+    on:click={() => {
+      s = undefined
+      showModal = true
+    }}><i class="fa-solid fa-plus" /></button
+  >
   <h4>Écoles</h4>
 
   <table>
@@ -33,15 +28,15 @@
       </tr>
     </thead>
     <tbody>
-      {#each data.schools as school, i}
+      {#each data.schools as school}
         <tr>
-          <td>{map.long[school.category]} {school.name}</td>
+          <td>{utils.map.long[school.category]} {school.name}</td>
           <td>
             <button
               class="secondary"
               on:click={() => {
-                editSchoolId = i
-                showEditModal = true
+                s = school
+                showModal = true
               }}
             >
               <i class="fa-solid fa-gear" />
@@ -53,8 +48,7 @@
   </table>
 </div>
 
-<EditSchoolModal bind:show={showEditModal} bind:data school={data.schools[editSchoolId]} />
-<AddSchoolModal bind:show={showAddModal} bind:data />
+<AddEditSchoolModal bind:show={showModal} bind:data school={s} />
 
 <style lang="scss">
   @use '../../../static/assets/sass/cards.scss';

@@ -7,14 +7,20 @@
   import CookiesService from '$services/cookies.service'
   import AgendaCard from '$components/actions/AgendaCard.svelte'
   import { goto } from '$app/navigation'
+  import ApiAuthService from '$services/api/api-auth.service'
 
   export let data: PageData
 
+  const apiAuth = new ApiAuthService()
   const cookies = new CookiesService()
 
-  function logout() {
-    cookies.delete('JWT')
-    goto('/')
+  async function logout() {
+    ;(await apiAuth.deleteLogout()).subscribe({
+      finally: () => {
+        cookies.delete('JWT')
+        goto('/')
+      }
+    })
   }
 </script>
 
@@ -37,7 +43,7 @@
     <TeamsCard bind:data />
   </div>
   <div class="admin">
-    <AgendaCard />
+    <AgendaCard bind:data />
   </div>
 </div>
 

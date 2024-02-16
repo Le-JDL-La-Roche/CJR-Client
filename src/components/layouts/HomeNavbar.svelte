@@ -12,10 +12,10 @@
       </div>
       <div class="misc">
         <li class="link media">
-          <a href="https://instagram.com/cdm_laroche"><i class="fa-brands fa-instagram" /></a>
+          <a href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
         </li>
         <li class="link media">
-          <a href="https://youtube.com/@lejdl.laroche"><i class="fa-brands fa-youtube" /></a>
+          <a href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
         </li>
         <li>
           <div class="separator" />
@@ -42,7 +42,7 @@
       padding: 0;
       display: flex;
       gap: 10px;
-      line-height: 1 !important;
+      line-height: 1.2 !important;
 
       div.links {
         width: calc(100% - 140px);
