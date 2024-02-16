@@ -1,0 +1,55 @@
+div.card {
+  padding: 40px;
+  background: #15151c;
+  border-radius: 3px;
+
+  // &:nth-of-type(1),
+  // &:nth-of-type(2),
+  // &:nth-of-type(3) {
+    flex: 1;
+    height: 300px;
+  // }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    padding: 10px 15px;
+    text-align: left;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  tr {
+    border-bottom: 1px solid #1c1c25;
+    display: table;
+  }
+
+  thead {
+    background: #1c1c25;
+    width: calc(100% - 16px);
+  }
+
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    /* even columns width , fix width of table too*/
+  }
+}
+
+h4 {
+  margin-bottom: 30px;
+}
+
+button.primary.add {
+  width: auto;
+  float: right;
+  margin-top: 0;
+}
