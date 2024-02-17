@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import * as d3 from 'd3'
   import type { Selection, BaseType, ZoomedElementBaseType, D3ZoomEvent } from 'd3'
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import type { Match } from '$models/features/match.model'
   import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
 

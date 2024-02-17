@@ -1,6 +1,6 @@
 <script lang="ts">
   import ModalTemplate from './ModalTemplate.svelte'
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import ApiTeamsService from '$services/api/api-teams.service'
   import type { Team, Teammate } from '$models/features/team.model'
   import utils from '$services/utils'

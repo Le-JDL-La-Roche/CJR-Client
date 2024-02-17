@@ -2,7 +2,7 @@
   import ModalTemplate from './ModalTemplate.svelte'
   import ApiSchoolsService from '$services/api/api-schools.service'
   import type { School } from '$models/features/school.model'
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import ApiAgendaService from '$services/api/api-agenda.service'
   import type { Event } from '$models/features/event.model'
 

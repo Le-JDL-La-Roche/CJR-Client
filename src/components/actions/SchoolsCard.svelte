@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import type { School } from '$models/features/school.model'
   import AddEditSchoolModal from '$components/modals/AddEditSchoolModal.svelte'
   import utils from '$services/utils'

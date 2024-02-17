@@ -1,13 +1,15 @@
 <script lang="ts">
-  import type { Match } from '$models/features/match.model'
-  import type { PageData } from '../../routes/(main)/admin/$types'
-  import type { Event } from '$models/features/event.model'
   import { onMount } from 'svelte'
-  import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
+  import type { PageData } from './$types'
+  import type { Event } from '$models/features/event.model'
   import utils from '$services/utils'
-  import AddEditEventModal from '$components/modals/AddEditEventModal.svelte'
+  import { goto } from '$app/navigation'
+  import ShowEventModal from '$components/modals/ShowEventModal.svelte'
+  import ApiAgendaService from '$services/api/api-agenda.service'
 
   export let data: PageData
+
+  const apiAgenda = new ApiAgendaService()
 
   const currentDate =
     new Date().getFullYear() +
@@ -16,6 +18,8 @@
     (new Date().getMonth() + 1) +
     '-' +
     new Date().getDate()
+
+  let showHead = true
 
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
@@ -66,17 +70,29 @@
     agendaArray = agenda.map((day) => day.day)
   }
 
-  onMount(() => {
-    selectedDay = agendaArray.findIndex((day) => day === currentDate)
-    let l = document.querySelector('div.line')! as HTMLElement
-    let top = ((new Date().getHours() * 60 + new Date().getMinutes() - 6 * 60) * 14) / 6
-
-    document.querySelector('div.agenda')!.scrollTo(0, top - 100)
-    line(l)
-    setInterval(() => line(l), 1000 * 120)
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      goto('/agenda')
+    }
   })
 
-  function line(l: HTMLElement) {
+  onMount(() => {
+    let l = document.querySelector('div.line')! as HTMLElement
+    line(l)
+    setInterval(() => line(l), 1000 * 60)
+  })
+
+  async function line(l: HTMLElement) {
+    selectedDay = agendaArray.findIndex((day) => day === currentDate)
+    let top = ((new Date().getHours() * 60 + new Date().getMinutes() - 6 * 60) * 14) / 6
+    document.querySelector('div.agenda')!.scrollTo(0, top - 100)
+
+    ;(await apiAgenda.getAgenda()).subscribe({
+      next: (res) => {
+        data.events = res.body.data!.events
+      }
+    })
+
     let date = new Date()
     let minutes = date.getMinutes()
     let hours = date.getHours()
@@ -92,26 +108,28 @@
     l.style.top = `${((hours * 60 + minutes - 6 * 60) * 14) / 6 + 47}px`
   }
 
-  let allowChangeTeams = false
-  let category: 'C' | 'L'
-  let tree: number
-  let showMatchModal = false
-  let m: Match
-
   let showModal = false
-  let e: Event | undefined
+  let e: Event
 </script>
 
-<div class="card" style="height: 500px">
-  <button
-    class="primary add"
-    on:click={() => {
-      showModal = true
-      e = undefined
-    }}><i class="fa-solid fa-plus" /></button
-  >
-  <h4>Agenda</h4>
+<svelte:head>
+  <title>Agenda • Coupe Jules Rimet</title>
+</svelte:head>
 
+<svelte:document
+  on:keypress={(e) => {
+    if (e.key === 'Escape') {
+      document.exitFullscreen()
+    }
+  }}
+  on:keydown={(e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === 'm')) {
+      showHead = !showHead
+    }
+  }}
+/>
+
+{#if showHead}
   <div class="head">
     <button class="secondary" disabled={selectedDay === 0} on:click={() => selectedDay--}>
       <i class="fa-solid fa-caret-left" />
@@ -127,67 +145,60 @@
       <i class="fa-solid fa-caret-right" />
     </button>
   </div>
-  <div class="agenda">
-    <div class="top">
-      <p class="h">H</p>
-      <p class="field f1">Terrain 1</p>
-      <p class="field f2">Terrain 2</p>
-      <p class="field f3">Terrain 3</p>
-      <p class="field f4">Terrain 4</p>
-    </div>
-    <div class="inner">
-      <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
-      {#each agenda[selectedDay].events.filter((event) => event.field === 0) as event}
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div
-          class="event-0"
-          on:click={() => {
-            e = event
-            showModal = true
-          }}
-          style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
+{/if}
+<div class="agenda" style={!showHead ? 'height: 100vh' : ''}>
+  <div class="top">
+    <p class="h">H</p>
+    <p class="field f1">Terrain 1</p>
+    <p class="field f2">Terrain 2</p>
+    <p class="field f3">Terrain 3</p>
+    <p class="field f4">Terrain 4</p>
+  </div>
+  <div class="inner">
+    <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
+    {#each agenda[selectedDay].events.filter((event) => event.field === 0) as event}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <div
+        class="event-0"
+        on:click={() => {
+          e = event
+          showModal = true
+        }}
+        style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
             top: ${
               ((new Date(event.fromDate).getHours() * 60 + new Date(event.fromDate).getMinutes() - 6 * 60) * 14) / 6 + 47
             }px;`}
-        >
-          <p class="date">
-            {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
-          </p>
-          <p class="title">{event.title}</p>
-        </div>
-      {/each}
-      <div class="h">
-        {#each ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'] as h}
-          <p>{h}:00</p>
-        {/each}
+      >
+        <p class="date">
+          {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </p>
+        <p class="title">{event.title}</p>
       </div>
-      {#each [1, 2, 3, 4] as i}
-        <div class="field f{i}">
-          {#each agenda[selectedDay].events.filter((event) => event.field === i) as event}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <div
-              class="event"
-              class:c={event.category === 'C'}
-              class:l={event.category === 'L'}
-              class:g={event.category === 'g'}
-              on:click={() => {
-                if (event.match) {
-                  m = data.matches.find((match) => match.id === event.id) || data.matches[0]
-                  tree = m.tree
-                  category = m.category
-                  allowChangeTeams = tree < 16
-                  showMatchModal = true
-                } else {
-                  e = event
-                  showModal = true
-                }
-              }}
-              style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
+    {/each}
+    <div class="h">
+      {#each ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'] as h}
+        <p>{h}:00</p>
+      {/each}
+    </div>
+    {#each [1, 2, 3, 4] as i}
+      <div class="field f{i}">
+        {#each agenda[selectedDay].events.filter((event) => event.field === i) as event}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-static-element-interactions -->
+          <div
+            class="event"
+            class:c={event.category === 'C'}
+            class:l={event.category === 'L'}
+            class:g={event.category === 'g'}
+            on:click={() => {
+              e = event
+              showModal = true
+            }}
+            style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
               top: ${
                 ((new Date(event.fromDate).getHours() * 60 + new Date(event.fromDate).getMinutes() - 6 * 60) * 14) / 6 + 10
               }px;
@@ -200,37 +211,33 @@
                   6 -
                 16
               }px`}
-            >
-              <p class="date">
-                {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })} - {new Date(event.toDate + '').toLocaleTimeString('fr-FR', {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}&nbsp;&nbsp;•&nbsp;&nbsp;<span>{event.title}</span>
-              </p>
-              <p class="content">{@html event.content}</p>
-            </div>
-          {/each}
-        </div>
-      {/each}
-    </div>
+          >
+            <p class="date">
+              {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+              })} - {new Date(event.toDate + '').toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+              })}&nbsp;&nbsp;•&nbsp;&nbsp;<span>{event.title}</span>
+            </p>
+            <p class="content">{@html event.content}</p>
+          </div>
+        {/each}
+      </div>
+    {/each}
   </div>
 </div>
 
-<AddEditMatchModal bind:show={showMatchModal} bind:data {allowChangeTeams} {category} {tree} match={m} />
-
-<AddEditEventModal bind:show={showModal} bind:data event={e} />
+<ShowEventModal bind:show={showModal} event={e} />
 
 <style lang="scss">
-  @use '../../../static/assets/sass/cards.scss';
-
   div.head {
     display: flex;
     justify-content: space-between;
     background: #1c1c25;
     padding: 10px 15px;
+    border-radius: 3px 3px 0 0;
 
     p {
       margin: 0;
@@ -240,8 +247,9 @@
   div.agenda {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(500px - 113px);
+    height: calc(100vh - 52px);
     position: relative;
+    border-radius: 0 0 3px 3px;
 
     div.top {
       display: flex;
@@ -356,7 +364,7 @@
           &::before {
             content: '';
             display: block;
-            width: 1071px;
+            width: calc(100vw - 52px);
             height: 1px;
             background: #1c1c25;
             position: absolute;

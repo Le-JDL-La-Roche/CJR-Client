@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import utils from '$services/utils'
   import type { Match } from '$models/features/match.model'
   import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
