@@ -6,9 +6,9 @@
           <a href="/" class="not"><img class="fav" src="/assets/img/fav.png" alt="Favicon" />Coupe Jules Rimet</a>
         </li>
         <li class="link"><a href="/tournois" class="not">Tournois</a></li>
-        <li class="link"><a href="/" class="not">Équipes</a></li>
-        <li class="link"><a href="/" class="not">Replays</a></li>
+        <li class="link"><a href="/equipes" class="not">Équipes</a></li>
         <li class="link"><a href="/" class="not">Agenda</a></li>
+        <li class="link"><a href="/" class="not">Replays</a></li>
       </div>
       <div class="misc">
         <li class="link media">

@@ -356,7 +356,7 @@
           &::before {
             content: '';
             display: block;
-            width: 1056px;
+            width: 1071px;
             height: 1px;
             background: #1c1c25;
             position: absolute;
