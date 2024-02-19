@@ -2,7 +2,7 @@
   import ModalTemplate from './ModalTemplate.svelte'
   import ApiSchoolsService from '$services/api/api-schools.service'
   import type { School } from '$models/features/school.model'
-  import type { PageData } from '../../routes/admin/$types'
+  import type { PageData } from '../../routes/(main)/admin/$types'
   import ApiAgendaService from '$services/api/api-agenda.service'
   import type { Event } from '$models/features/event.model'
 
@@ -123,7 +123,7 @@
     </div>
 
     <label for="private">
-      <input type="checkbox" id="private" bind:checked={status} />&nbsp;&nbsp;Évènement privé
+      <input type="checkbox" id="private" bind:checked={status} />&nbsp;&nbsp;Évènement privé (visible seulement par vous)
     </label>
 
     <p class="error">{error}</p>

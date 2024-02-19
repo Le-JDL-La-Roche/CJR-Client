@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { Match } from '$models/features/match.model'
-  import type { PageData } from '../../routes/(main)/admin/$types'
-  import type { Event } from '$models/features/event.model'
   import { onDestroy, onMount } from 'svelte'
-  import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
+  import type { PageData } from './$types'
+  import type { Event } from '$models/features/event.model'
   import utils from '$services/utils'
-  import AddEditEventModal from '$components/modals/AddEditEventModal.svelte'
+  import { goto } from '$app/navigation'
+  import ShowEventModal from '$components/modals/ShowEventModal.svelte'
 
   export let data: PageData
 
@@ -98,25 +97,23 @@
     l.style.top = `${((hours * 60 + minutes - 6 * 60) * 14) / 6 + 47}px`
   }
 
-  let allowChangeTeams = false
-  let category: 'C' | 'L'
-  let tree: number
-  let showMatchModal = false
-  let m: Match
-
   let showModal = false
-  let e: Event | undefined
+  let e: Event
 </script>
 
-<div class="card" style="height: 500px">
+<svelte:head>
+  <title>Agenda • Coupe Jules Rimet</title>
+</svelte:head>
+
+<div class="content">
   <button
-    class="primary add"
+    class="secondary expand"
     on:click={() => {
-      showModal = true
-      e = undefined
-    }}><i class="fa-solid fa-plus" /></button
+      document.documentElement.requestFullscreen()
+      goto('/agenda/fullscreen')
+    }}><i class="fa-solid fa-expand" /></button
   >
-  <h4>Agenda</h4>
+  <h2>Agenda</h2>
 
   <div class="head">
     <button class="secondary" disabled={selectedDay === 0} on:click={() => selectedDay--}>
@@ -182,16 +179,8 @@
               class:l={event.category === 'L'}
               class:g={event.category === 'g'}
               on:click={() => {
-                if (event.match) {
-                  m = data.matches.find((match) => match.id === event.id) || data.matches[0]
-                  tree = m.tree
-                  category = m.category
-                  allowChangeTeams = tree < 16
-                  showMatchModal = true
-                } else {
-                  e = event
-                  showModal = true
-                }
+                e = event
+                showModal = true
               }}
               style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
               top: ${
@@ -225,18 +214,25 @@
   </div>
 </div>
 
-<AddEditMatchModal bind:show={showMatchModal} bind:data {allowChangeTeams} {category} {tree} match={m} />
-
-<AddEditEventModal bind:show={showModal} bind:data event={e} />
+<ShowEventModal bind:show={showModal} event={e} />
 
 <style lang="scss">
-  @use '../../../static/assets/sass/cards.scss';
+  button.expand {
+    display: block;
+    margin-top: 0;
+    padding: 12px 15px;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    float: right;
+  }
 
   div.head {
     display: flex;
     justify-content: space-between;
     background: #1c1c25;
     padding: 10px 15px;
+    border-radius: 3px 3px 0 0;
 
     p {
       margin: 0;
@@ -246,8 +242,9 @@
   div.agenda {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(500px - 113px);
+    height: 500px;
     position: relative;
+    border-radius: 0 0 3px 3px;
 
     div.top {
       display: flex;
@@ -362,7 +359,7 @@
           &::before {
             content: '';
             display: block;
-            width: 1071px;
+            width: 1151px;
             height: 1px;
             background: #1c1c25;
             position: absolute;

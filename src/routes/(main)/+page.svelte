@@ -6,14 +6,14 @@
   <div class="home-content">
     <h1>Coupe Jules Rimet</h1>
 
-    <a href="/tournoi" class="not">
+    <a href="/tournois" class="not">
       <button class="home primary">
         <i class="fa-solid fa-sitemap fa-rotate-90" />
-        Tournoi
+        Tournois
       </button>
     </a>
 
-    <a href="/direct">
+    <a href="/replays">
       <button class="home primary">
         <i class="fa-solid fa-circle-play" />
         Direct

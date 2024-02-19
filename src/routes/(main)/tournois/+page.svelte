@@ -1,10 +1,9 @@
 <script lang="ts">
+  import type { PageData } from './$types'
   import { onMount } from 'svelte'
   import * as d3 from 'd3'
   import type { Selection, BaseType, ZoomedElementBaseType, D3ZoomEvent } from 'd3'
-  import type { PageData } from '../../routes/(main)/admin/$types'
   import type { Match } from '$models/features/match.model'
-  import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
 
   export let data: PageData
 
@@ -18,17 +17,11 @@
   let iL: number
   let jL: number
 
-  let showModal = false
-  let allowChangeTeams = false
-  let tree: number
-  let category: 'C' | 'L' = 'C'
-  let m: Match | undefined = undefined
-
   onMount(() => {
-    const containerWidth = 1120
+    const containerWidth = 1200
     const containerHeight = 458
-    const svgWidth = 1700
-    const svgHeight = 1250
+    const svgWidth = 1650
+    const svgHeight = 1290
 
     const zoomC = d3
       .zoom()
@@ -112,8 +105,8 @@
     ;(cat === 'C' ? gC : gL)
       .append('rect')
       .attr('id', `rect-${i}`)
-      .attr('x', x)
-      .attr('y', y)
+      .attr('x', x + 20)
+      .attr('y', y + 20)
       .attr('width', 200)
       .attr('height', 50)
       .attr('rx', 2)
@@ -121,8 +114,8 @@
       .style('fill', '#f5f5f5')
     ;(cat === 'C' ? gC : gL)
       .append('text')
-      .attr('x', x + 10)
-      .attr('y', y + 15)
+      .attr('x', x + 10 + 20)
+      .attr('y', y + 15 + 20)
       .attr('text-anchor', 'left')
       .attr('dominant-baseline', 'middle')
       .style('font-size', '10px')
@@ -130,8 +123,8 @@
       .text(school)
     ;(cat === 'C' ? gC : gL)
       .append('text')
-      .attr('x', x + 10)
-      .attr('y', y + 35)
+      .attr('x', x + 10 + 20)
+      .attr('y', y + 35 + 20)
       .attr('text-anchor', 'left')
       .attr('dominant-baseline', 'middle')
       .style('font-size', '15px')
@@ -150,12 +143,12 @@
       .attr(
         'd',
         `
-        M ${x} ${y + 25 * c + 15 * (c - 1)} 
-        L ${x + 60} ${y + 25 * c + 15 * (c - 1)} 
-        L ${x + 60} ${y + c * 135 - 15 * (c + 1)}
-        L ${x} ${y + c * 135 - 15 * (c + 1)}
-        M ${x + 60} ${y + (160 * c - 30) / 2} 
-        L ${x + 150} ${y + (160 * c - 30) / 2}
+        M ${x + 20} ${y + 25 * c + 15 * (c - 1) + 20} 
+        L ${x + 60 + 20} ${y + 25 * c + 15 * (c - 1) + 20} 
+        L ${x + 60 + 20} ${y + c * 135 - 15 * (c + 1) + 20}
+        L ${x + 20} ${y + c * 135 - 15 * (c + 1) + 20}
+        M ${x + 60 + 20} ${y + (160 * c - 30) / 2 + 20}
+        L ${x + 150 + 20} ${y + (160 * c - 30) / 2 + 20}
       `
       )
       .attr('stroke', '#dedede')
@@ -163,61 +156,34 @@
     ;(cat === 'C' ? gC : gL)
       .append('rect')
       .attr('id', `match-${j}`)
-      .attr('x', x + 40)
-      .attr('y', y + (160 * c - 30) / 2 - 45)
+      .attr('x', x + 40 + 20)
+      .attr('y', y + (160 * c - 30) / 2 - 45 + 20)
       .attr('width', 40)
       .attr('height', 90)
       .attr('rx', 20)
       .attr('ry', 20)
       .style('fill', '#f5f5f5')
-      .style('cursor', 'pointer')
-      .on('click', (e) => {
-        let match = data.matches.find((match) => match.tree === +e.target.id.split('-')[1] && match.category === category)
-        if (match) {
-          tree = match.tree
-          allowChangeTeams = tree < 16
-          m = match
-          showModal = true
-        } else {
-          tree = +e.target.id.split('-')[1]
-          allowChangeTeams = tree < 16
-          m = undefined
-          showModal = true
-        }
-      })
-      .on('mouseover', function () {
-        d3.select(this).style('fill', '#d5d5d5')
-      })
-      .on('mouseout', function () {
-        d3.select(this).style('fill', '#f5f5f5')
-      })
 
     let match = data.matches.find((match) => match.tree === j && match.category === cat)
     if (match && (match.score1 || match.score2)) {
       ;(cat === 'C' ? gC : gL)
         .append('text')
-        .attr('x', x + 60)
-        .attr('y', y + (160 * c - 30) / 2 - 20)
+        .attr('x', x + 60 + 20)
+        .attr('y', y + (160 * c - 30) / 2 - 20 + 20)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .style('font-size', (match.score1 || 0) > (match.score2 || 0) ? '20px' : '15px')
         .style('font-weight', 'bold')
         .text(match.score1 || 0)
-        .on('click', () => {
-          document.getElementById(`match-${j}`)?.dispatchEvent(new MouseEvent('click'))
-        })
       ;(cat === 'C' ? gC : gL)
         .append('text')
-        .attr('x', x + 60)
-        .attr('y', y + (160 * c - 30) / 2 + 20)
+        .attr('x', x + 60 + 20)
+        .attr('y', y + (160 * c - 30) / 2 + 20 + 20)
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .style('font-size', (match.score1 || 0) < (match.score2 || 0) ? '20px' : '15px')
         .style('font-weight', 'bold')
         .text(match.score2 || 0)
-        .on('click', () => {
-          document.getElementById(`match-${j}`)?.dispatchEvent(new MouseEvent('click'))
-        })
     }
 
     if (cat === 'C') jC += 2
@@ -276,50 +242,31 @@
   function zoomedL(event: D3ZoomEvent<ZoomedElementBaseType, unknown>) {
     gL.attr('transform', event.transform.toString())
   }
-
-  function toggle(to: 'C' | 'L') {
-    if (to === 'C') category = 'C'
-    else category = 'L'
-  }
 </script>
 
-<div class="card" style="height: 520px">
-  <div class="toggle">
-    <h4>Tournoi</h4>
-    <button class:primary={category === 'C'} class:secondary={category === 'L'} on:click={() => toggle('C')}>Collège</button>
-    <button class:primary={category === 'L'} class:secondary={category === 'C'} on:click={() => toggle('L')}>Lycée</button>
-  </div>
+<svelte:head>
+  <title>Tournois • Coupe Jules Rimet</title>
+</svelte:head>
 
-  <div id="tournament-c" style="display: {category === 'C' ? 'block' : 'none'}" />
-  <div id="tournament-l" style="display: {category === 'L' ? 'block' : 'none'}" />
+<div class="content">
+  <h2>Tournois</h2>
+
+  <h3>Tournoi Collège</h3>
+  <div class="tournament" id="tournament-c" />
+
+  <h3>Tournoi Lycée</h3>
+  <div class="tournament" id="tournament-l" />
 </div>
 
-<AddEditMatchModal bind:show={showModal} bind:data {allowChangeTeams} {category} {tree} match={m} />
-
 <style lang="scss">
-  @use '../../../static/assets/sass/cards.scss';
-
-  h4 {
-    display: inline-block;
-    margin-top: 3px;
-    margin-bottom: 0;
-    margin-right: 30px;
+  h3 {
+    margin-top: 26px;
+    font-size: 20px;
   }
 
-  div.toggle {
-    display: flex;
-    margin-bottom: 30px;
-    height: 40px;
-
-    button {
-      width: 100px;
-      margin: 0;
-      font-weight: bold;
-
-      &.secondary {
-        padding: 5px 0 !important;
-        margin: 3px 0;
-      }
-    }
+  div.tournament {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    background-color: #121216
   }
 </style>

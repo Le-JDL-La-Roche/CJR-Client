@@ -3,12 +3,12 @@
     <ul>
       <div class="links">
         <li class="home">
-          <a href="/" class="not"><img class="fav" src="/assets/img/fav.png" alt="Favicon" />Coupe Jules Rimet</a>
+          <a href="/" class="not"><img class="fav" src="/assets/img/fav2.png" alt="Favicon" />Coupe Jules Rimet</a>
         </li>
-        <li class="link"><a href="/" class="not">Tournois</a></li>
-        <li class="link"><a href="/" class="not">Équipes</a></li>
-        <li class="link"><a href="/" class="not">Replays</a></li>
-        <li class="link"><a href="/" class="not">Agenda</a></li>
+        <li class="link"><a href="/tournois" class="not">Tournois</a></li>
+        <li class="link"><a href="/equipes" class="not">Équipes</a></li>
+        <li class="link"><a href="/agenda" class="not">Agenda</a></li>
+        <li class="link"><a href="/replays" class="not">Replays</a></li>
       </div>
       <div class="misc">
         <li class="link media">
@@ -75,6 +75,7 @@
         height: 22px;
         margin-right: 15px;
         left: 20px;
+        transform: scale(1.2)
       }
 
       &:last-of-type {

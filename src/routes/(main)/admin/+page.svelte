@@ -8,6 +8,8 @@
   import AgendaCard from '$components/actions/AgendaCard.svelte'
   import { goto } from '$app/navigation'
   import ApiAuthService from '$services/api/api-auth.service'
+  import LiveCard from '$components/actions/LiveCard.svelte'
+  import StreamCard from '$components/actions/StreamCard.svelte'
 
   export let data: PageData
 
@@ -44,6 +46,10 @@
   </div>
   <div class="admin">
     <AgendaCard bind:data />
+  </div>
+  <div class="admin">
+    <LiveCard bind:data />
+    <StreamCard bind:data />
   </div>
 </div>
 

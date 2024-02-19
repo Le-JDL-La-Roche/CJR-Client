@@ -1,4 +1,4 @@
-import type { PageLoad } from '../$types'
+import type { PageLoad } from './$types'
 import ApiAuthService from '$services/api/api-auth.service'
 import CookiesService from '$services/cookies.service'
 import { goto } from '$app/navigation'
