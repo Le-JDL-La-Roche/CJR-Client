@@ -6,7 +6,7 @@ Ce site Web est également utilisé par les organisateurs pour gérer les équip
 ## Hébergement du site Web
 
 Ce site est hébergé chez [Hostim](https://hostim.fr).
-Le nom de domaine [cjr.cf](https://cjr.cf) est enregistré chez [Freenom](https://freenom.com).
+Le nom de domaine [cjr.le-jdl-laroche.cf](https://cjr.le-jdl-laroche.cf) est enregistré chez [Freenom](https://freenom.com).
 
 ## Développement du site Web
 
@@ -16,6 +16,6 @@ Le site est hébergé sur un serveur Node.js, qui sert les fichiers générés p
 
 ## *Open source*
 
-Le code source du site Web est disponible sur [GitHub](https://github.com/Le-JDL-La-Roche/Match-Manager-Client) sous licence [GNU GPLv3](https://github.com/Le-JDL-La-Roche/Match-Manager-Client/blob/main/LICENSE). Vous pouvez donc le consulter, le modifier et le redistribuer librement, à condition de respecter les termes de la licence.
+Le code source du site Web est disponible sur [GitHub](https://github.com/Le-JDL-La-Roche/CJR-Client) sous licence [GNU GPLv3](https://github.com/Le-JDL-La-Roche/CJR-Client/blob/main/LICENSE). Vous pouvez donc le consulter, le modifier et le redistribuer librement, à condition de respecter les termes de la licence.
 
-En cas de problème/bug/suggestion, vous pouvez [ouvrir une issue](https://github.com/Le-JDL-La-Roche/Match-Manager-Client/issues) sur GitHub.
+En cas de problème/bug/suggestion, vous pouvez [ouvrir une issue](https://github.com/Le-JDL-La-Roche/CJR-Client/issues) sur GitHub.
