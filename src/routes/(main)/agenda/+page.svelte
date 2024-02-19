@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import type { PageData } from './$types'
   import type { Event } from '$models/features/event.model'
   import utils from '$services/utils'
@@ -19,6 +19,8 @@
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
   let selectedDay: number = 0
+
+  let interval: NodeJS.Timeout
 
   $: if (data.matches || data.events) {
     let daysM = new Set(data.matches.map((match) => match.fromDate.split('T')[0]))
@@ -72,7 +74,11 @@
 
     document.querySelector('div.agenda')!.scrollTo(0, top - 100)
     line(l)
-    setInterval(() => line(l), 1000 * 120)
+    interval = setInterval(() => line(l), 1000 * 120)
+  })
+
+  onDestroy(() => {
+    clearInterval(interval)
   })
 
   function line(l: HTMLElement) {

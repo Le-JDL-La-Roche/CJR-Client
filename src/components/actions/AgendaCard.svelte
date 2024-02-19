@@ -2,7 +2,7 @@
   import type { Match } from '$models/features/match.model'
   import type { PageData } from '../../routes/(main)/admin/$types'
   import type { Event } from '$models/features/event.model'
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
   import utils from '$services/utils'
   import AddEditEventModal from '$components/modals/AddEditEventModal.svelte'
@@ -20,6 +20,8 @@
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
   let selectedDay: number = 0
+
+  let interval: NodeJS.Timeout
 
   $: if (data.matches || data.events) {
     let daysM = new Set(data.matches.map((match) => match.fromDate.split('T')[0]))
@@ -73,7 +75,11 @@
 
     document.querySelector('div.agenda')!.scrollTo(0, top - 100)
     line(l)
-    setInterval(() => line(l), 1000 * 120)
+    interval = setInterval(() => line(l), 1000 * 120)
+  })
+
+  onDestroy(() => {
+    clearInterval(interval)
   })
 
   function line(l: HTMLElement) {

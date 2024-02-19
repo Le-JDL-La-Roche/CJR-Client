@@ -2,7 +2,7 @@ import type { School } from '$models/features/school.model'
 import type { Team } from '$models/features/team.model'
 import ApiSchoolsService from '$services/api/api-schools.service'
 import ApiTeamsService from '$services/api/api-teams.service'
-import { error } from '@sveltejs/kit'
+import { error, type NumericRange } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
 
 const apiTeams = new ApiTeamsService()
@@ -17,7 +17,7 @@ export const load: PageLoad = async () => {
       teams = res.body.data!.teams
     },
     error: (err) => {
-      throw error(err.status, err.body.message)
+      throw error(err.status as NumericRange<400, 599>, err.body.message)
     }
   })
   ;(await apiSchools.getSchools()).subscribe({
@@ -25,7 +25,7 @@ export const load: PageLoad = async () => {
       schools = res.body.data!.schools
     },
     error: (err) => {
-      throw error(err.status, err.body.message)
+      throw error(err.status as NumericRange<400, 599>, err.body.message)
     }
   })
 

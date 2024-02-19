@@ -123,7 +123,7 @@
     </div>
 
     <label for="private">
-      <input type="checkbox" id="private" bind:checked={status} />&nbsp;&nbsp;Évènement privé
+      <input type="checkbox" id="private" bind:checked={status} />&nbsp;&nbsp;Évènement privé (visible seulement par vous)
     </label>
 
     <p class="error">{error}</p>

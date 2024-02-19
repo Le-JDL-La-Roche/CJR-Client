@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import type { PageData } from './$types'
   import type { Event } from '$models/features/event.model'
   import utils from '$services/utils'
@@ -24,6 +24,8 @@
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
   let selectedDay: number = 0
+
+  let interval: NodeJS.Timeout
 
   $: if (data.matches || data.events) {
     let daysM = new Set(data.matches.map((match) => match.fromDate.split('T')[0]))
@@ -79,7 +81,11 @@
   onMount(() => {
     let l = document.querySelector('div.line')! as HTMLElement
     line(l)
-    setInterval(() => line(l), 1000 * 60)
+    interval = setInterval(() => line(l), 1000 * 60)
+  })
+
+  onDestroy(() => {
+    clearInterval(interval)
   })
 
   async function line(l: HTMLElement) {
@@ -87,7 +93,7 @@
     let top = ((new Date().getHours() * 60 + new Date().getMinutes() - 6 * 60) * 14) / 6
     document.querySelector('div.agenda')!.scrollTo(0, top - 100)
 
-    ;(await apiAgenda.getAgenda()).subscribe({
+    ;(await apiAgenda.getEvents()).subscribe({
       next: (res) => {
         data.events = res.body.data!.events
       }

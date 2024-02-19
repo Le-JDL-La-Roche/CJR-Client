@@ -4,7 +4,7 @@ import { api } from '$services/store'
 import type { Event } from '$models/features/event.model'
 
 export default class ApiAgendaService {
-  async getAgenda() {
+  async getEvents() {
     return await http.get<DataHttpResponse<{ events: Event[] }>>(`${api}/agenda`)
   }
 
