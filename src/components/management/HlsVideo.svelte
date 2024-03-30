@@ -8,6 +8,9 @@
   let video: HTMLVideoElement
   
   onMount(async () => {
+    /**
+     * This is NOT a secret key, it is only the ID of the stream.
+     */
     const key = await fetch('https://stream.cjr.le-jdl-laroche.cf/key').then((res) => res.text())
 
     if (Hls.isSupported()) {

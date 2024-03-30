@@ -23,4 +23,8 @@ export default class ApiMatchesService {
   async getStreams() {
     return await http.get<DataHttpResponse<{ ter1: string; ter2: string; glob: string }>>(`${api}/streams`)
   }
+
+  async updateKeyFile(key: string) {
+    return await http.put<DataHttpResponse<{ key: string }>>(`${api}/key`, { key })
+  }
 }

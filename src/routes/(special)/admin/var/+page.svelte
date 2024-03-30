@@ -9,6 +9,9 @@
   let key: string = ''
 
   onMount(async () => {
+    /**
+     * This is NOT a secret key, it is only the ID of the stream.
+     */
     key = await fetch('https://stream.cjr.le-jdl-laroche.cf/key').then((res) => res.text())
   })
 

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import ApiMatchesService from '$services/api/api-matches.service'
   import io from '$services/api/socket.service'
   import CookiesService from '$services/cookies.service'
+  import { onMount } from 'svelte'
   import type { PageData } from './$types'
 
-  export let data: PageData
-
   const cookies = new CookiesService()
+  const apiMatches = new ApiMatchesService()
 
   let play = false
 
@@ -21,6 +22,17 @@
   let s2 = '0'
 
   let add = '0'
+
+  let newKey: string = ''
+  let key: string = ''
+
+  onMount(async () => {
+    /**
+     * This is NOT a secret key, it is only the ID of the stream.
+     */
+    key = await fetch('https://stream.cjr.le-jdl-laroche.cf/key').then((res) => res.text())
+    newKey = key
+  })
 
   function playPause() {
     play = !play
@@ -79,6 +91,14 @@
   function send() {
     io.emit('updateScoreboard', { jwt: cookies.get('JWT'), scoreboard: { t1, t2, s1, s2, play, t, add } })
   }
+
+  async function submit() {
+    ;(await apiMatches.updateKeyFile(newKey)).subscribe({
+      next: (res) => {
+        key = res.body.data!.key
+      }
+    })
+  }
 </script>
 
 <svelte:head>
@@ -112,12 +132,29 @@
       </button>
       <button class="secondary stop" on:click={stop}><i class="fa-solid fa-stop" /></button>
       <button class="secondary minus" style="margin-right: 0" on:click={minus}><i class="fa-solid fa-minus" /></button>
-      <button class="secondary minus" style="margin-right: 0" on:click={round}><i class="fa-solid fa-angle-left" /></button>
-      <button class="secondary minus" on:click={plus}><i class="fa-solid fa-plus" /></button>
+      <button class="secondary zero" style="margin-right: 0" on:click={round}><i class="fa-solid fa-angle-left" /></button>
+      <button class="secondary plus" on:click={plus}><i class="fa-solid fa-plus" /></button>
 
       <button class="primary send" on:click={send}><i class="fa-solid fa-check" /></button>
     </div>
   </div>
+
+  <form on:submit={submit} style="margin-top: 30px;">
+    <label for="key">
+      Changer la clé de stream :&nbsp;&nbsp;
+      <input type="text" bind:value={newKey} style="display: inline; width: 200px; margin-bottom: 0" />
+    </label>
+    <button class="primary send-key" on:click={send}><i class="fa-solid fa-check" /></button>
+    <br />
+    <small>
+      Clé actuelle : <code style="font-family: Consolas, mono">{key}</code><br />
+      <span style="color: #ff6c6c">
+        <b style="color: #ff6c6c">Attention !</b> Ne pas changer la clé durant un live.<br />Débrancher puis rebrancher les
+        caméras après changement.
+      </span><br />
+      Cette clé n'est PAS secrète, elle est seulement l'identifiant du stream, à placer dans OBS.
+    </small>
+  </form>
 </div>
 
 <style lang="scss">
@@ -130,6 +167,7 @@
   button.play,
   button.stop,
   button.minus,
+  button.zero,
   button.plus {
     width: 35px;
     display: inline-block;
@@ -146,8 +184,13 @@
     margin-top: 0;
   }
 
-  h4 {
-    margin-bottom: 30px;
+  button.send-key {
+    width: 45px;
+    display: inline-block;
+    margin-left: 15px;
+    position: relative;
+    right: -15px;
+    margin-top: 0;
   }
 
   div.scoreboard {
