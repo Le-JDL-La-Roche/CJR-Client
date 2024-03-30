@@ -93,7 +93,7 @@
 
   <div class="scoreboard">
     <!-- svelte-ignore a11y-missing-attribute -->
-    <img src="/assets/img/scoreboard.png" class="logo" />
+    <img src="/assets/img/scoreboard2.png" class="logo" />
     <div class="frame">
       <div class="board">
         <span contenteditable="true" bind:textContent={t1}>FRA</span>
@@ -152,11 +152,10 @@
 
   div.scoreboard {
     img.logo {
-      width: 100px;
-      height: 100px;
+      width: 104px;
       margin: 0 auto;
       position: relative;
-      bottom: -40px;
+      bottom: -36.9px;
     }
 
     div.frame {

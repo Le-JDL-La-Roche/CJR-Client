@@ -3,6 +3,7 @@
   import utils from '$services/utils'
   import type { Match } from '$models/features/match.model'
   import AddEditMatchModal from '$components/modals/AddEditMatchModal.svelte'
+  import { goto } from '$app/navigation'
 
   export let data: PageData
 
@@ -14,7 +15,13 @@
 </script>
 
 <div class="card" style="height: 400px">
-  <!-- <button class="primary add"><i class="fa-solid fa-plus" /></button> -->
+  <button
+    class="primary add"
+    on:click={() => {
+      document.documentElement.requestFullscreen()
+      goto('/admin/var')
+    }}>Accéder à la VAR&nbsp;&nbsp;<i class="fa-solid fa-arrow-right" /></button
+  >
   <h4>Matchs</h4>
 
   <table>

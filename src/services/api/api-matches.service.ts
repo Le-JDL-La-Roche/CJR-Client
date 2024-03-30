@@ -19,4 +19,8 @@ export default class ApiMatchesService {
   async deleteMatch(id: number | string) {
     return await http.delete<DataHttpResponse<{ matches: Match[] }>>(`${api}/matches/${id}`)
   }
+
+  async getStreams() {
+    return await http.get<DataHttpResponse<{ ter1: string; ter2: string; glob: string }>>(`${api}/streams`)
+  }
 }
