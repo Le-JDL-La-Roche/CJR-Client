@@ -10,7 +10,9 @@
   <p class="desc">
     <small>
       Gestion du streaming pour le Terrain 1.<br />
-      <i class="fa-solid fa-warning"></i>&nbsp;&nbsp;Une seule personne à la fois ne peut se connecter à cet espace !
+      <span style="color: #ff6c6c">
+        <b style="color: #ff6c6c">Attention !</b> Une seule personne peut se connecter à cet espace !
+      </span>
     </small>
   </p>
 
