@@ -11,7 +11,8 @@
     <div>
       <h5>Informations</h5>
       <p>
-        <a href="/a-propos">A propos de ce site Web</a>
+        <a href="/a-propos">À propos de ce site Web</a><br>
+        <a href="https://le-jdl-laroche.cf" target="_blank">Site du Journal du Lycée La Rochefoucauld</a>
       </p>
     </div>
   </div>
