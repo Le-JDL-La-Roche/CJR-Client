@@ -38,4 +38,10 @@
       margin-bottom: 0;
     }
   }
+
+  @media screen and (max-width: 950px) {
+    div.content {
+      flex-direction: column;
+    }
+  }
 </style>
