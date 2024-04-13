@@ -41,12 +41,19 @@
     <button class="open" on:click={show}><i class="fa-solid fa-bars" /></button>
     <a href="/" class="not home"><img class="fav" src="/assets/img/fav2.png" alt="Favicon" />Coupe Jules Rimet</a>
     <div class="links" bind:this={mobileLinks}>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
       <ul>
         <button class="open" on:click={show}><i class="fa-solid fa-times" /></button>
-        <li class="link"><a href="/tournois" class="not">Tournois</a></li>
-        <li class="link"><a href="/equipes" class="not">Équipes</a></li>
-        <li class="link"><a href="/agenda" class="not">Agenda</a></li>
-        <li class="link"><a href="/replays" class="not">Replays</a></li>
+        <li class="link" on:click={show}><a href="/" class="not">Accueil</a></li>
+        <li class="link" on:click={show}><a href="/tournois" class="not">Tournois</a></li>
+        <li class="link" on:click={show}><a href="/equipes" class="not">Équipes</a></li>
+        <li class="link" on:click={show}><a href="/agenda" class="not">Agenda</a></li>
+        <li class="link" on:click={show}><a href="/replays" class="not">Replays</a></li>
+        <li class="link media">
+          <a href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
+          <a href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -188,7 +195,7 @@
 
     div.links {
       width: 0;
-      height: 100%;
+      height: 100vh;
       overflow: hidden;
       transition: all 0.3s;
       position: fixed;
@@ -217,6 +224,14 @@
             border-radius: 3px;
             color: white;
             text-decoration: none;
+            width: 100%;
+          }
+
+          &.link.media {
+            padding-top: 20px;
+            a {
+              width: 22px;
+            }
           }
         }
       }
