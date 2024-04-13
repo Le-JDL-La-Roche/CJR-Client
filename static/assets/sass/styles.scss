@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
 
-:root {
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+
   --primary-color: #be1600;
   --primary-color-hover: #a01300;
 
@@ -8,11 +12,6 @@
   --primary-light-color-hover: #c56154;
 
   --border-color: #a0a0a0;
-}
-
-* {
-  font-family: 'Montserrat', sans-serif;
-  color: white;
   // line-height: 1.6;
 }
 
@@ -61,7 +60,8 @@ h5 {
   margin-top: 0;
 }
 
-p, ul {
+p,
+ul {
   line-height: 1.8;
 }
 
@@ -172,9 +172,9 @@ input[type=datetime-local] {
   height: 16px;
 
   &:disabled {
-      background-color: #80808040;
-      cursor: not-allowed;
-    }
+    background-color: #80808040;
+    cursor: not-allowed;
+  }
 }
 
 textarea {
