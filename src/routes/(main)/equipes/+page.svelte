@@ -134,4 +134,10 @@
       }
     }
   }
+
+  @media screen and (max-width: 950px) {
+    div.team {
+      flex: calc(100% - 40px) !important;
+    }
+  }
 </style>

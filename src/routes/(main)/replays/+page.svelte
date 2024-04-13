@@ -93,4 +93,28 @@
     height: calc(9 / 16 * (1200px / 3 - 13.4px));
     border-radius: 3px;
   }
+
+  @media screen and (max-width: 1240px) {
+    iframe.replay {
+      width: calc(100vw / 3 - 26.8px);
+      height: calc(9 / 16 * (100vw / 3 - 26.8px));
+      border-radius: 3px;
+    }
+  }
+
+  @media screen and (max-width: 950px) {
+    iframe.replay {
+      width: calc(100vw / 2 - 30px);
+      height: calc(9 / 16 * (100vw / 2 - 30px));
+      border-radius: 3px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    iframe.replay {
+      width: calc(100vw - 40px);
+      height: calc(9 / 16 * (100vw - 40px));
+      border-radius: 3px;
+    }
+  }
 </style>

@@ -83,18 +83,19 @@
 
   function line(l: HTMLElement) {
     let date = new Date()
-    let minutes = date.getMinutes()
-    let hours = date.getHours()
+    // let minutes = 0 || date.getMinutes()
+    let minutes = 15
+    let hours = 10 || date.getHours()
     if (hours >= 21) {
       hours = 21
       minutes = 0
     }
-    if (hours <= 6) {
+    if (hours < 6) {
       hours = 6
       minutes = 0
     }
 
-    l.style.top = `${((hours * 60 + minutes - 6 * 60) * 14) / 6 + 47}px`
+    l.style.top = `${(((hours - 6) * 60 + minutes) * (2110 - 10)) / 900 + 10}px`
   }
 
   let showModal = false
@@ -139,7 +140,6 @@
       <p class="field f4">Terrain 4</p>
     </div>
     <div class="inner">
-      <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
       {#each agenda[selectedDay].events.filter((event) => event.field === 0) as event}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -164,6 +164,7 @@
         </div>
       {/each}
       <div class="h">
+        <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
         {#each ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'] as h}
           <p>{h}:00</p>
         {/each}
@@ -251,7 +252,7 @@
       flex-direction: row;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 1000;
 
       p {
         color: #d0d0d0;
@@ -261,12 +262,13 @@
 
       p.h {
         border-bottom: 2px solid #1c1c25;
+        z-index: 1001;
       }
 
       p.field {
         margin: 0;
         flex: 1;
-        padding: 5px;
+        padding: 5px 2px;
         background: #18181f;
         border-bottom: 2px solid #1c1c25;
         border-right: 1px solid #1c1c25;
@@ -278,30 +280,31 @@
       }
     }
 
+    div.line {
+      width: calc(4 * 282px + 5px);
+      height: 2px;
+      background: #c70f1e;
+      position: absolute;
+      left: 51px;
+      z-index: 1000;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        background: #c70f1e;
+        position: relative;
+        top: -2px;
+        left: -4px;
+      }
+    }
+
     div.inner {
       display: flex;
       flex-direction: row;
-
-      div.line {
-        width: calc(100% - 51px);
-        height: 2px;
-        background: #c70f1e;
-        position: absolute;
-        left: 51px;
-        z-index: 5;
-
-        &::before {
-          content: '';
-          display: block;
-          width: 6px;
-          height: 6px;
-          border-radius: 3px;
-          background: #c70f1e;
-          position: relative;
-          top: -2px;
-          left: -4px;
-        }
-      }
+      position: relative;
 
       div.event-0 {
         width: calc(100% - 52px);
@@ -346,7 +349,8 @@
       div.h {
         height: 2110px;
         text-align: right;
-        position: relative;
+        z-index: 100;
+        // position: relative;
 
         p {
           margin-top: 0;
@@ -391,6 +395,7 @@
         width: calc(100% - 14px - 6px);
         overflow-y: hidden;
         cursor: pointer;
+        z-index: 100;
 
         p.date {
           margin: 0;
@@ -423,20 +428,46 @@
     }
   }
 
-  p.h,
-  div.h {
-    width: 40px !important;
-    background: #18181f;
-    margin: 0;
-    padding: 5px;
-    border-right: 1px solid #1c1c25;
-  }
-
   button.secondary:disabled {
     color: #a5a5a5 !important;
 
     i {
       color: #c0c0c0;
+    }
+  }
+
+  .h {
+    width: 40px !important;
+    min-width: 40px !important;
+    background: #18181f;
+    margin: 0;
+    padding: 5px;
+    border-right: 1px solid #1c1c25;
+    position: sticky;
+    left: 0;
+    z-index: 1000;
+  }
+
+  @media screen and (max-width: 1240px) {
+    button.expand {
+      display: none
+    }
+
+    div.agenda {
+      overflow-x: auto;
+    }
+
+    .field {
+      width: 281px;
+      min-width: 281px;
+    }
+
+    div.inner, div.top {
+      width: calc(4 * (281px + 4px) + 40px);
+    }
+    
+    div.h {
+      z-index: 101 !important;
     }
   }
 </style>

@@ -1,5 +1,17 @@
+<script lang="ts">
+  let mobileLinks: HTMLDivElement
+
+  function show() {
+    if (mobileLinks.style.width === '0px') {
+      mobileLinks.style.width = '100%'
+    } else {
+      mobileLinks.style.width = '0'
+    }
+  }
+</script>
+
 <header>
-  <nav>
+  <nav class="desktop">
     <ul>
       <div class="links">
         <li class="home">
@@ -24,17 +36,63 @@
       </div>
     </ul>
   </nav>
+
+  <nav class="mobile">
+    <button class="open" on:click={show}><i class="fa-solid fa-bars" /></button>
+    <a href="/" class="not home"><img class="fav" src="/assets/img/fav2.png" alt="Favicon" />Coupe Jules Rimet</a>
+    <div class="links" bind:this={mobileLinks}>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <ul>
+        <button class="open" on:click={show}><i class="fa-solid fa-times" /></button>
+        <li class="link" on:click={show}><a href="/" class="not">Accueil</a></li>
+        <li class="link" on:click={show}><a href="/tournois" class="not">Tournois</a></li>
+        <li class="link" on:click={show}><a href="/equipes" class="not">Équipes</a></li>
+        <li class="link" on:click={show}><a href="/agenda" class="not">Agenda</a></li>
+        <li class="link" on:click={show}><a href="/replays" class="not">Replays</a></li>
+        <li class="link media">
+          <a href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
+          <a href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </header>
 
 <style lang="scss">
   nav {
     background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
-    width: calc(100% - 40px);
     z-index: 1000;
+  }
+
+  img.fav {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    height: 22px;
+    margin-right: 15px;
+    transform: scale(1.2);
+  }
+
+  a.home,
+  a.link {
+    display: inline-block;
+    padding: 10px 20px 10px 20px;
+    font-weight: 800;
+    font-size: 18px;
+    transition: all 0.1s;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+  }
+
+  nav.desktop {
+    width: calc(100% - 40px);
     padding: 15px 20px;
 
     ul {
@@ -69,15 +127,6 @@
       display: flex;
       align-items: center;
 
-      img.fav {
-        display: inline-block;
-        position: absolute;
-        height: 22px;
-        margin-right: 15px;
-        left: 20px;
-        transform: scale(1.2)
-      }
-
       &:last-of-type {
         div.separator {
           display: inline-block;
@@ -111,7 +160,6 @@
       }
 
       &.home a {
-        padding-left: 57px;
         position: relative;
       }
 
@@ -126,6 +174,77 @@
         width: 20px;
         padding: 0 10px;
       }
+    }
+  }
+
+  nav.mobile {
+    display: none;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+
+    button.open {
+      background-color: transparent;
+      padding: 15px 20px 15px 30px;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    div.links {
+      width: 0;
+      height: 100vh;
+      overflow: hidden;
+      transition: all 0.3s;
+      position: fixed;
+      background-color: #0f0f14;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      top: 0;
+      left: 0;
+
+      ul {
+        margin: 0;
+        padding: 0;
+        gap: 10px;
+        line-height: 1.2 !important;
+
+        li {
+          list-style: none;
+          display: flex;
+          align-items: center;
+
+          &.link a {
+            display: inline-block;
+            padding: 10px 20px 10px 30px;
+            font-weight: 800;
+            font-size: 18px;
+            transition: all 0.1s;
+            border-radius: 3px;
+            color: white;
+            text-decoration: none;
+            width: 100%;
+          }
+
+          &.link.media {
+            padding-top: 20px;
+            a {
+              width: 22px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    nav.desktop {
+      display: none;
+    }
+
+    nav.mobile {
+      display: block;
     }
   }
 </style>
