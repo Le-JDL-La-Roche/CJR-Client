@@ -90,7 +90,7 @@
       hours = 21
       minutes = 0
     }
-    if (hours <= 6) {
+    if (hours < 6) {
       hours = 6
       minutes = 0
     }

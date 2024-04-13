@@ -30,6 +30,14 @@
   <title>Administrateur • Coupe Jules Rimet</title>
 </svelte:head>
 
+<div class="phone">
+  <h2>📱</h2>
+  <p style="font-weight: bold; margin-top: 0;">
+    Vous êtes sur un téléphone ou l'écran de votre ordinateur est trop petit.<br />
+    Veuillez utiliser un ordinateur avec un écran d'au moins 1240 pixels de large pour accéder à cette page.
+  </p>
+</div>
+
 <div class="content">
   <button class="secondary logout" on:click={logout}><i class="fa-solid fa-right-from-bracket" />&nbsp;&nbsp;Déconnexion</button>
   <h2>Espace administrateur</h2>
@@ -72,6 +80,27 @@
 
     &:hover {
       background: #5c3b39;
+    }
+  }
+
+  div.phone {
+    display: none;
+  }
+
+  @media screen and (max-width: 1240px) {
+    div.phone {
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      height: calc(100vh - 40px);
+      width: calc(100vw - 40px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #0f0f14;
+      z-index: 1000;
     }
   }
 </style>

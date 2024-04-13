@@ -18,7 +18,7 @@
   let jL: number
 
   onMount(() => {
-    const containerWidth = 1200
+    const containerWidth = window.innerWidth > 1240 ? 1200 : window.innerWidth - 40
     const containerHeight = 458
     const svgWidth = 1650
     const svgHeight = 1290
@@ -244,6 +244,14 @@
   }
 </script>
 
+<svelte:window on:resize={() => {
+  if (svgC && svgL) {
+    const containerWidth = window.innerWidth > 1240 ? 1200 : window.innerWidth - 40
+    svgC.attr('width', containerWidth)
+    svgL.attr('width', containerWidth)
+  }
+}}/>
+
 <svelte:head>
   <title>Tournois • Coupe Jules Rimet</title>
 </svelte:head>
@@ -267,6 +275,6 @@
   div.tournament {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 3px;
-    background-color: #121216
+    background-color: #121216;
   }
 </style>
