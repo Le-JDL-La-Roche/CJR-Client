@@ -26,9 +26,9 @@
 
   onMount(() => {
     const containerWidth = 1120
-    const containerHeight = 458
-    const svgWidth = 1700
-    const svgHeight = 1250
+    const containerHeight = 290
+    const svgWidth = 1120
+    const svgHeight = 290
 
     const zoomC = d3
       .zoom()
@@ -84,23 +84,23 @@
     iL = 0
     jL = 0
 
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 8 / Math.pow(2, i); j++) {
+    for (let i = 0; i < 2; i++) {
+      for (let j = 0; j < 2 / Math.pow(2, i); j++) {
         addRectangle(i * 350, Math.pow(2, i) * j * 160 + 40 * (Math.pow(2, i) - 1), 'C')
         addRectangle(i * 350, Math.pow(2, i) * j * 160 + 60 * Math.pow(2, i + 1) - 40, 'C')
         addBracket(i * 350 + 200, Math.pow(2, i) * j * 160, Math.pow(2, i), 'C')
       }
     }
-    addRectangle(1400, 600, 'C')
+    addRectangle(700, 120, 'C')
 
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 8 / Math.pow(2, i); j++) {
+    for (let i = 0; i < 2; i++) {
+      for (let j = 0; j < 2 / Math.pow(2, i); j++) {
         addRectangle(i * 350, Math.pow(2, i) * j * 160 + 40 * (Math.pow(2, i) - 1), 'L')
         addRectangle(i * 350, Math.pow(2, i) * j * 160 + 60 * Math.pow(2, i + 1) - 40, 'L')
         addBracket(i * 350 + 200, Math.pow(2, i) * j * 160, Math.pow(2, i), 'L')
       }
     }
-    addRectangle(1400, 600, 'L')
+    addRectangle(700, 120, 'L')
   }
 
   function addRectangle(x: number, y: number, cat: 'C' | 'L') {
@@ -175,12 +175,12 @@
         let match = data.matches.find((match) => match.tree === +e.target.id.split('-')[1] && match.category === category)
         if (match) {
           tree = match.tree
-          allowChangeTeams = tree < 16
+          allowChangeTeams = tree < 4
           m = match
           showModal = true
         } else {
           tree = +e.target.id.split('-')[1]
-          allowChangeTeams = tree < 16
+          allowChangeTeams = tree < 4
           m = undefined
           showModal = true
         }
@@ -225,7 +225,7 @@
   }
 
   function getSchoolText(i: number, cat: 'C' | 'L') {
-    if (i < 16) {
+    if (i < 4) {
       let match =
         i % 2 === 0
           ? data.matches.find((match) => match.tree === i && match.category === cat)
@@ -237,7 +237,7 @@
         : ''
     } else {
       let match = data.matches.find(
-        (match) => match.tree === (i - 16) * 2 && match.category === cat && (match.score1 || match.score2)
+        (match) => match.tree === (i - 4) * 2 && match.category === cat && (match.score1 || match.score2)
       )
       return match && (match.score1 || 0) > (match.score2 || 0)
         ? data.schools.find((school) => school.id === data.teams.find((team) => team.id === match?.team1)?.school)?.name + ''
@@ -248,7 +248,7 @@
   }
 
   function getTeamText(i: number, cat: 'C' | 'L') {
-    if (i < 16) {
+    if (i < 4) {
       let match =
         i % 2 === 0
           ? data.matches.find((match) => match.tree === i && match.category === cat)
@@ -260,7 +260,7 @@
         : ''
     } else {
       let match = data.matches.find(
-        (match) => match.tree === (i - 16) * 2 && match.category === cat && (match.score1 || match.score2)
+        (match) => match.tree === (i - 4) * 2 && match.category === cat && (match.score1 || match.score2)
       )
       return match && (match.score1 || 0) > (match.score2 || 0)
         ? data.teams.find((team) => team.id === match?.team1)?.name + ''
@@ -283,7 +283,7 @@
   }
 </script>
 
-<div class="card" style="height: 520px">
+<div class="card" style="height: 352px">
   <div class="toggle">
     <h4>Tournoi</h4>
     <button class:primary={category === 'C'} class:secondary={category === 'L'} on:click={() => toggle('C')}>Collège</button>

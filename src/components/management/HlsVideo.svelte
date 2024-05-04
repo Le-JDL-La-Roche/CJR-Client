@@ -45,7 +45,7 @@
   }
 
   video {
-    width: calc(50vw - 2px);
-    height: calc(9 / 16 * 50vw - 2px)
+    width: calc(16 / 9 * 50vh - 2px);
+    height: calc(50vh - 2px)
   }
 </style>

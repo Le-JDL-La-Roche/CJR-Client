@@ -51,8 +51,10 @@
         <li class="link" on:click={show}><a href="/agenda" class="not">Agenda</a></li>
         <li class="link" on:click={show}><a href="/replays" class="not">Replays</a></li>
         <li class="link media">
-          <a href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
-          <a href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+          <a on:click={show} href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
+          <a on:click={show} href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+          <div class="separator" />
+          <a on:click={show} href="/connexion" class="not"><button class="secondary"><i class="fa-solid fa-gear" /></button></a>
         </li>
       </ul>
     </div>

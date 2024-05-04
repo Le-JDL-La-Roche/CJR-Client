@@ -15,7 +15,8 @@
     (new Date().getMonth() < 9 ? '0' : '') +
     (new Date().getMonth() + 1) +
     '-' +
-    new Date().getDate()
+    (new Date().getDate() < 9 ? '0' : '') +
+    new Date().getMonth()
 
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
@@ -203,9 +204,13 @@
                   new Date(event.fromDate).getHours() * 60 -
                   new Date(event.fromDate).getMinutes()) *
                   14) /
-                  6 -
-                16
-              }px`}
+                  6 - (((new Date(event.toDate + '').getHours() * 60 +
+                  new Date(event.toDate + '').getMinutes() -
+                  new Date(event.fromDate).getHours() * 60 -
+                  new Date(event.fromDate).getMinutes()) *
+                  14) /
+                  6 <= 16 ? 0 : 16)
+              }px; min-height: 10px`}
             >
               <p class="date">
                 {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
