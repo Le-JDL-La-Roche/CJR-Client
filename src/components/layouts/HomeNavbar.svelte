@@ -2,7 +2,7 @@
   let mobileLinks: HTMLDivElement
 
   function show() {
-    if (mobileLinks.style.width === '0px') {
+    if (mobileLinks.style.width == '0px' || mobileLinks.offsetWidth == 0) {
       mobileLinks.style.width = '100%'
     } else {
       mobileLinks.style.width = '0'
@@ -51,8 +51,10 @@
         <li class="link" on:click={show}><a href="/agenda" class="not">Agenda</a></li>
         <li class="link" on:click={show}><a href="/replays" class="not">Replays</a></li>
         <li class="link media">
-          <a href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
-          <a href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+          <a on:click={show} href="https://instagram.com/cdm_laroche" target="_blank"><i class="fa-brands fa-instagram" /></a>
+          <a on:click={show} href="https://youtube.com/@lejdl.laroche" target="_blank"><i class="fa-brands fa-youtube" /></a>
+          <div class="separator" />
+          <a on:click={show} href="/connexion" class="not"><button class="secondary"><i class="fa-solid fa-gear" /></button></a>
         </li>
       </ul>
     </div>
@@ -87,8 +89,12 @@
     font-size: 18px;
     transition: all 0.1s;
     border-radius: 3px;
-    color: white;
+    color: white !important;
     text-decoration: none;
+
+    &:hover {
+      color: white !important;
+    }
   }
 
   nav.desktop {
@@ -144,7 +150,7 @@
       &.home a,
       &.link a {
         display: inline-block;
-        padding: 10px 20px 10px 20px;
+        padding: 5px 20px 7px 20px;
         font-weight: 800;
         font-size: 18px;
         transition: all 0.1s;
@@ -181,7 +187,7 @@
     display: none;
     position: fixed;
     top: 0;
-    z-index: 1000;
+    z-index: 10000;
     width: 100%;
 
     button.open {
@@ -238,7 +244,15 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 1240px) {
+    a {
+      &:hover {
+        color: white !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
     nav.desktop {
       display: none;
     }

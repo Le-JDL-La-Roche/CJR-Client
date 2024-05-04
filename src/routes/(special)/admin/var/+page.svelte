@@ -8,6 +8,8 @@
 
   let key: string = ''
 
+  $: w = window.innerWidth
+
   onMount(async () => {
     /**
      * This is NOT a secret key, it is only the ID of the stream.
@@ -48,6 +50,7 @@
     >&nbsp;&nbsp;&nbsp;VAR</h2>
     <p><i class="fa-solid fa-triangle-exclamation" />&nbsp;&nbsp;Attention au délai de 20 secondes !</p>
     
+    {#if w > 1200}
     <p style="font-size: 12px;">
       <b>Impossible de lire les directs ?</b><br />
       <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -64,6 +67,7 @@
         &nbsp;&nbsp;https://stream.cjr.le-jdl-laroche.cf/hls/{data.glob}/{key}/index.m3u8
       </code>
     </p>
+    {/if}
   </div>
   <div>
     <HlsVideo stream={data.ter1} title="Caméra 1" />

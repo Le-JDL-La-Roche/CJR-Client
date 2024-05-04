@@ -18,7 +18,11 @@
   <button
     class="primary add"
     on:click={() => {
-      document.documentElement.requestFullscreen()
+      try {
+        document.documentElement.requestFullscreen()
+      } catch {
+        goto('/admin/var')
+      }
       goto('/admin/var')
     }}>Accéder à la VAR&nbsp;&nbsp;<i class="fa-solid fa-arrow-right" /></button
   >

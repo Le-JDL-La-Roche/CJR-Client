@@ -14,7 +14,9 @@
     (new Date().getMonth() < 9 ? '0' : '') +
     (new Date().getMonth() + 1) +
     '-' +
-    new Date().getDate()
+    (new Date().getDate() < 9 ? '0' : '') +
+    new Date().getMonth()
+
 
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
@@ -83,9 +85,8 @@
 
   function line(l: HTMLElement) {
     let date = new Date()
-    // let minutes = 0 || date.getMinutes()
-    let minutes = 15
-    let hours = 10 || date.getHours()
+    let minutes = date.getMinutes()
+    let hours = date.getHours()
     if (hours >= 21) {
       hours = 21
       minutes = 0
@@ -140,6 +141,12 @@
       <p class="field f4">Terrain 4</p>
     </div>
     <div class="inner">
+      <div class="h">
+        <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
+        {#each ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'] as h}
+          <p>{h}:00</p>
+        {/each}
+      </div>
       {#each agenda[selectedDay].events.filter((event) => event.field === 0) as event}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -151,7 +158,7 @@
           }}
           style={`display: ${new Date(event.fromDate).getHours() >= 6 ? 'block' : 'none'};
             top: ${
-              ((new Date(event.fromDate).getHours() * 60 + new Date(event.fromDate).getMinutes() - 6 * 60) * 14) / 6 + 47
+              (((new Date(event.fromDate).getHours() - 6) * 60 + new Date(event.fromDate).getMinutes()) * (2110 - 10)) / 900 + 10
             }px;`}
         >
           <p class="date">
@@ -163,12 +170,6 @@
           <p class="title">{event.title}</p>
         </div>
       {/each}
-      <div class="h">
-        <div class="line" style="display: {agendaArray[selectedDay] === currentDate ? 'block' : 'none'}" />
-        {#each ['06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'] as h}
-          <p>{h}:00</p>
-        {/each}
-      </div>
       {#each [1, 2, 3, 4] as i}
         <div class="field f{i}">
           {#each agenda[selectedDay].events.filter((event) => event.field === i) as event}
@@ -193,9 +194,13 @@
                   new Date(event.fromDate).getHours() * 60 -
                   new Date(event.fromDate).getMinutes()) *
                   14) /
-                  6 -
-                16
-              }px`}
+                  6 - (((new Date(event.toDate + '').getHours() * 60 +
+                  new Date(event.toDate + '').getMinutes() -
+                  new Date(event.fromDate).getHours() * 60 -
+                  new Date(event.fromDate).getMinutes()) *
+                  14) /
+                  6 <= 16 ? 0 : 16)
+              }px; min-height: 10px`}
             >
               <p class="date">
                 {new Date(event.fromDate).toLocaleTimeString('fr-FR', {
@@ -281,7 +286,7 @@
     }
 
     div.line {
-      width: calc(4 * 282px + 5px);
+      width: calc(4 * 282px + 22px);
       height: 2px;
       background: #c70f1e;
       position: absolute;
@@ -314,6 +319,7 @@
         left: 52px;
         z-index: 4;
         cursor: pointer;
+        z-index: 500;
 
         p.date {
           margin: 0;
@@ -349,7 +355,7 @@
       div.h {
         height: 2110px;
         text-align: right;
-        z-index: 100;
+        z-index: 10000;
         // position: relative;
 
         p {
@@ -395,7 +401,7 @@
         width: calc(100% - 14px - 6px);
         overflow-y: hidden;
         cursor: pointer;
-        z-index: 100;
+        z-index: 10000;
 
         p.date {
           margin: 0;
@@ -450,7 +456,7 @@
 
   @media screen and (max-width: 1240px) {
     button.expand {
-      display: none
+      display: none;
     }
 
     div.agenda {
@@ -462,10 +468,11 @@
       min-width: 281px;
     }
 
-    div.inner, div.top {
+    div.inner,
+    div.top {
       width: calc(4 * (281px + 4px) + 40px);
     }
-    
+
     div.h {
       z-index: 101 !important;
     }

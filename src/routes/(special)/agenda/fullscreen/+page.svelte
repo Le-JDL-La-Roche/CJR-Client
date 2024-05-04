@@ -17,7 +17,8 @@
     (new Date().getMonth() < 9 ? '0' : '') +
     (new Date().getMonth() + 1) +
     '-' +
-    new Date().getDate()
+    (new Date().getDate() < 9 ? '0' : '') +
+    new Date().getMonth()
 
   let showHead = true
 
@@ -111,7 +112,7 @@
       minutes = 0
     }
 
-    l.style.top = `${((hours * 60 + minutes - 6 * 60) * 14) / 6 + 47}px`
+    l.style.top = `${(((hours - 6) * 60 + minutes) * (2110 - 10)) / 900 + 10}px`
   }
 
   let showModal = false

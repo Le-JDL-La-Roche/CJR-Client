@@ -53,10 +53,10 @@
       block = match && (match.score1 || match.score2) ? true : false
     } else {
       const match1 = data.matches.find(
-        (m_) => m_.tree === ((tree || 16) - 16) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
+        (m_) => m_.tree === ((tree || 4) - 4) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
       )
       const match2 = data.matches.find(
-        (m_) => m_.tree === ((tree || 16) - 15) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
+        (m_) => m_.tree === ((tree || 4) - 3) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
       )
       team1 =
         match1 && (match1.score1 || 0) > (match1.score2 || 0)
