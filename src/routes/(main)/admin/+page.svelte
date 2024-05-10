@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { PageData } from './$types'
   import SchoolsCard from '$components/actions/SchoolsCard.svelte'
-  import TeamsCard from '$components/actions/TeamsCard.svelte'
-  import TournamentCard from '$components/actions/TournamentCard.svelte'
+  // import TeamsCard from '$components/actions/TeamsCard.svelte'
+  import Tournament2Card from '$components/actions/Tournament2Card.svelte'
   import MatchesCard from '$components/actions/MatchesCard.svelte'
   import CookiesService from '$services/cookies.service'
   import AgendaCard from '$components/actions/AgendaCard.svelte'
@@ -38,11 +38,11 @@
     <MatchesCard bind:data />
   </div>
   <div class="admin">
-    <TournamentCard bind:data />
+    <Tournament2Card bind:data />
   </div>
   <div class="admin">
     <SchoolsCard bind:data />
-    <TeamsCard bind:data />
+    <!-- <TeamsCard bind:data /> -->
   </div>
   <div class="admin">
     <AgendaCard bind:data />

@@ -1,4 +1,7 @@
-<script lang="ts">
+<!-- <script lang="ts">
+  /**
+   * @deprecated
+   */
   import { onMount } from 'svelte'
   import * as d3 from 'd3'
   import type { Selection, BaseType, ZoomedElementBaseType, D3ZoomEvent } from 'd3'
@@ -322,4 +325,4 @@
       }
     }
   }
-</style>
+</style> -->

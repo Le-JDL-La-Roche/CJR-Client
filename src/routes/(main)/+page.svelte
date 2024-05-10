@@ -27,23 +27,24 @@
     <h3>À propos de la CJR</h3>
 
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio magnam neque id ab in, adipisci repellendus obcaecati!
-      Blanditiis fugit illum quaerat, id eligendi, repellat fuga perspiciatis quibusdam maxime odio culpa.<br />
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugiat magnam distinctio neque nesciunt quae commodi qui reiciendis
-      sequi, corrupti, nostrum repudiandae vero ab nulla labore voluptatum dolorem eveniet. Ab, perspiciatis. Lorem ipsum dolor, sit
-      amet consectetur adipisicing elit. Dolore quasi corrupti eius mollitia quos ducimus natus, quae, labore aliquid error voluptates
-      facilis ipsum magni, eveniet pariatur repellendus odio nesciunt dolorem.
+      Il y a 10 ans, un éducateur a lancé à La Rochefoucauld un tournoi de football en hommage à Jules Rimet, l'un des fondateurs
+      de la FIFA.<br />
+      Depuis lors, ce tournoi a progressivement évolué pour inclure cette année une nouvelle dimension : un tournoi “inter-écoles”.
+      Les établissements participants organisent des tournois dans leurs écoles respectives, et les équipes victorieuses de ces tournois
+      se qualifient pour la Coupe Jules Rimet, où elles affrontent les équipes des autres écoles !<br />
+      <br />
+      Merci à La Salle Passy-Buzenval d'accueillir cette première édition de la Coupe Jules Rimet.
     </p>
 
     <h3>Photos</h3>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+
+    <div class="img">
+      <img src="/assets/img/1.jpg" alt="Illustration" />
+      <img src="/assets/img/2.jpg" alt="Illustration" />
+      <img src="/assets/img/3.jpg" alt="Illustration" />
+    </div>
+
+    <p style="text-align: right"><small><i style="color: #d0d0d0">Crédits : <a target="_blank" href="https://instagram.com/cdm_laroche">@cdm_laroche</a></i></small></p>
   </div>
 </section>
 
@@ -87,6 +88,20 @@
   div.content {
     margin-top: 75px;
     margin-bottom: 50px;
+  }
+
+  div.img {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    img {
+      display: block;
+      flex: 1;
+      width: calc(100% / 3 - 20px);
+      border-radius: 3px;
+    }
   }
 
   @media screen and (max-width: 1220px) {
@@ -159,6 +174,13 @@
 
     button.home.sec {
       margin-right: 0 !important;
+    }
+
+    div.img {
+      img {
+        width: calc(100% / 2 - 30px);
+        max-width: calc(100% / 2 - 30px);
+      }
     }
   }
 </style>

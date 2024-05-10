@@ -11,11 +11,13 @@ export default class ApiSchoolsService {
   }
 
   async postSchool(school: School) {
-    return await http.post<DataHttpResponse<{ schools: School[] }>>(`${api}/schools`, school)
+    let school_ = { ...school, teammates: JSON.stringify(school.teammates) }
+    return await http.post<DataHttpResponse<{ schools: School[] }>>(`${api}/schools`, school_)
   }
 
   async putSchool(school: Partial<School>, id: number | string) {
-    return await http.put<DataHttpResponse<{ schools: School[] }>>(`${api}/schools/${id}`, school)
+    let school_ = { ...school, teammates: JSON.stringify(school.teammates) }
+    return await http.put<DataHttpResponse<{ schools: School[] }>>(`${api}/schools/${id}`, school_)
   }
 
   async deleteSchool(id: number | string) {

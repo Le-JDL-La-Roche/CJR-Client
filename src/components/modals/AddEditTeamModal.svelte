@@ -1,4 +1,7 @@
 <script lang="ts">
+  /**
+   * @deprecated
+   */
   import ModalTemplate from './ModalTemplate.svelte'
   import type { PageData } from '../../routes/(main)/admin/$types'
   import ApiTeamsService from '$services/api/api-teams.service'
@@ -55,7 +58,7 @@
     const exec = team ? apiTeams.putTeam : apiTeams.postTeam
     ;(await exec(t, team ? team.id! : 0)).subscribe({
       next: (res) => {
-        data.teams = res.body.data?.teams || []
+        // data.teams = res.body.data?.teams || []
         show = false
       },
       error: (err) => {
@@ -68,7 +71,7 @@
     if (confirm('Voulez-vous supprimer cette équipe ?\nLes matchs associés seront également supprimés.')) {
       ;(await apiTeams.deleteTeam(team!.id!)).subscribe({
         next: (res) => {
-          data.teams = res.body.data!.teams
+          // data.teams = res.body.data!.teams
           data.matches = res.body.data!.matches
           show = false
         },

@@ -1,4 +1,7 @@
 <script lang="ts">
+  /**
+   * @deprecated
+   */
   import type { PageData } from '../../routes/(main)/admin/$types'
   import utils from '$services/utils'
   import AddEditTeamModal from '$components/modals/AddEditTeamModal.svelte'
@@ -11,7 +14,13 @@
 </script>
 
 <div class="card">
-  <button class="primary add" on:click={() => {t = undefined; showModal = true}}><i class="fa-solid fa-plus" /></button>
+  <button
+    class="primary add"
+    on:click={() => {
+      t = undefined
+      showModal = true
+    }}><i class="fa-solid fa-plus" /></button
+  >
   <h4>Équipes</h4>
 
   <table>
@@ -23,8 +32,8 @@
       </tr>
     </thead>
     <tbody>
-      {#each data.teams as team}
-        <tr>
+      {#each data.schools as team}
+        <!-- <tr>
           <td>{team.name}</td>
           <td>
             {utils.map.short[data.schools.find((school) => school.id === team.school)?.category || 'C']}
@@ -41,7 +50,7 @@
               <i class="fa-solid fa-gear" />
             </button>
           </td>
-        </tr>
+        </tr> -->
       {/each}
     </tbody>
   </table>

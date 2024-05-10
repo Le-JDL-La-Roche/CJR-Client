@@ -16,7 +16,7 @@
     (new Date().getMonth() + 1) +
     '-' +
     (new Date().getDate() < 9 ? '0' : '') +
-    new Date().getMonth()
+    new Date().getDate()
 
   let agenda: { day: string; events: Event[] }[] = []
   let agendaArray: string[] = []
@@ -40,11 +40,9 @@
       let day = match.fromDate.split('T')[0]
       let i = agenda.findIndex((a) => a.day === day)
       let title = `Match ${utils.map.long[match.category]}`
-      let content = `${data.teams.find((team) => team.id === match.team1)?.name || 'Équipe 1'} (${
-        data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.name || 'École 1'
-      })<br /><i>vs.</i><br />${data.teams.find((team) => team.id === match.team2)?.name || 'Équipe 2'} (${
-        data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.name || 'École 2'
-      })`
+      let content = `${data.schools.find(school => school.id == match.team1)?.name || 'École 1'}
+      <i>vs.</i>
+      ${data.schools.find(school => school.id == match.team2)?.name || 'École 2'}`
       agenda[i].events.push({
         id: match.id || 0,
         title: title,
@@ -71,6 +69,7 @@
 
   onMount(() => {
     selectedDay = agendaArray.findIndex((day) => day === currentDate)
+    console.log(currentDate, agendaArray)
     let l = document.querySelector('div.line')! as HTMLElement
     let top = ((new Date().getHours() * 60 + new Date().getMinutes() - 6 * 60) * 14) / 6
 
@@ -101,7 +100,7 @@
 
   let allowChangeTeams = false
   let category: 'C' | 'L'
-  let tree: number
+  let tree: string
   let showMatchModal = false
   let m: Match
 
@@ -187,7 +186,6 @@
                   m = data.matches.find((match) => match.id === event.id) || data.matches[0]
                   tree = m.tree
                   category = m.category
-                  allowChangeTeams = tree < 16
                   showMatchModal = true
                 } else {
                   e = event
@@ -204,12 +202,16 @@
                   new Date(event.fromDate).getHours() * 60 -
                   new Date(event.fromDate).getMinutes()) *
                   14) /
-                  6 - (((new Date(event.toDate + '').getHours() * 60 +
+                  6 -
+                (((new Date(event.toDate + '').getHours() * 60 +
                   new Date(event.toDate + '').getMinutes() -
                   new Date(event.fromDate).getHours() * 60 -
                   new Date(event.fromDate).getMinutes()) *
                   14) /
-                  6 <= 16 ? 0 : 16)
+                  6 <=
+                16
+                  ? 0
+                  : 16)
               }px; min-height: 10px`}
             >
               <p class="date">

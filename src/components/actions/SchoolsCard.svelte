@@ -23,7 +23,7 @@
   <table>
     <thead>
       <tr>
-        <th style="width: 385px">Nom</th>
+        <th style="width: 1005px">Nom</th>
         <th />
       </tr>
     </thead>
@@ -62,7 +62,7 @@
     }
 
     tr td:nth-of-type(1) {
-      width: 385px;
+      width: 1005px;
     }
   }
 </style>
