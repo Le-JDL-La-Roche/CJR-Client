@@ -18,7 +18,7 @@
     (new Date().getMonth() + 1) +
     '-' +
     (new Date().getDate() < 9 ? '0' : '') +
-    new Date().getMonth()
+    new Date().getDate()
 
   let showHead = true
 
@@ -44,11 +44,9 @@
       let day = match.fromDate.split('T')[0]
       let i = agenda.findIndex((a) => a.day === day)
       let title = `Match ${utils.map.long[match.category]}`
-      let content = `${data.teams.find((team) => team.id === match.team1)?.name || 'Équipe 1'} (${
-        data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.name || 'École 1'
-      })<br /><i>vs.</i><br />${data.teams.find((team) => team.id === match.team2)?.name || 'Équipe 2'} (${
-        data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.name || 'École 2'
-      })`
+      let content = `${data.schools.find((school) => school.id === match.team1)?.name || 'Équipe 1'}
+      <i>vs.</i>
+      ${data.schools.find((school) => school.id === match.team2)?.name || 'Équipe 2'}`
       agenda[i].events.push({
         id: match.id || 0,
         title: title,

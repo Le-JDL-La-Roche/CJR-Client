@@ -10,7 +10,7 @@
   export let match: Match | undefined
   export let allowChangeTeams: boolean = false
   export let category: 'C' | 'L'
-  export let tree: number
+  export let tree: string
 
   const apiMatches = new ApiMatchesService()
 
@@ -52,24 +52,26 @@
       field = match.field
       block = match && (match.score1 || match.score2) ? true : false
     } else {
-      const match1 = data.matches.find(
-        (m_) => m_.tree === ((tree || 4) - 4) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
-      )
-      const match2 = data.matches.find(
-        (m_) => m_.tree === ((tree || 4) - 3) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
-      )
-      team1 =
-        match1 && (match1.score1 || 0) > (match1.score2 || 0)
-          ? match1.team1
-          : match1 && (match1.score1 || 0) < (match1.score2 || 0)
-          ? match1.team2
-          : 0
-      team2 =
-        match2 && (match2.score1 || 0) > (match2.score2 || 0)
-          ? match2.team1
-          : match2 && (match2.score1 || 0) < (match2.score2 || 0)
-          ? match2.team2
-          : 0
+      // const match1 = data.matches.find(
+      //   (m_) => m_.tree === ((+tree || 4) - 4) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
+      // )
+      // const match2 = data.matches.find(
+      //   (m_) => m_.tree === ((tree || 4) - 3) * 2 && m_.category === (category || 'C') && (m_.score1 || m_.score2)
+      // )
+      // team1 =
+      //   match1 && (match1.score1 || 0) > (match1.score2 || 0)
+      //     ? match1.team1
+      //     : match1 && (match1.score1 || 0) < (match1.score2 || 0)
+      //     ? match1.team2
+      //     : 0
+      // team2 =
+      //   match2 && (match2.score1 || 0) > (match2.score2 || 0)
+      //     ? match2.team1
+      //     : match2 && (match2.score1 || 0) < (match2.score2 || 0)
+      //     ? match2.team2
+      //     : 0
+      team1 = data.schools.filter(s => s.category === category)[+tree.split('-')[0]].id || 0
+      team2 = data.schools.filter(s => s.category === category)[+tree.split('-')[1]].id || 0
       score1 = 0
       score2 = 0
       fromDate = ''
@@ -118,11 +120,10 @@
     <div class="teams">
       <select bind:value={team1} disabled={!allowChangeTeams || block} style="display: inline; width: 357px">
         <option value={0} disabled>-- Sélectionner --</option>
-        {#each data.teams as team}
-          {#if data.schools.find((s) => s.id === team.school)?.category === category}
+        {#each data.schools as team}
+          {#if team.category === category}
             <option value={team.id}>
-              {team.name} ({utils.map.short[category]}
-              {data.schools.find((s) => s.id === team.school)?.name})
+              {utils.map.short[category]} {team.name}
             </option>
           {/if}
         {/each}
@@ -130,11 +131,10 @@
       <p>vs.</p>
       <select bind:value={team2} disabled={!allowChangeTeams || block} style="display: inline; width: 356px">
         <option value={0} disabled>-- Sélectionner --</option>
-        {#each data.teams as team}
-          {#if data.schools.find((s) => s.id === team.school)?.category === category && team.id !== team1}
+        {#each data.schools as team}
+          {#if team.category === category && team.id !== team1}
             <option value={team.id}>
-              {team.name} ({utils.map.short[category]}
-              {data.schools.find((s) => s.id === team.school)?.name})
+              {utils.map.short[category]} {team.name}
             </option>
           {/if}
         {/each}

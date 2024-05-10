@@ -13,12 +13,11 @@
 
   <h3>Équipes Collège</h3>
   <div class="teams">
-    {#each data.teams as team}
-      {#if data.schools.find((s) => s.id === team.school)?.category === 'C'}
+    {#each data.schools as team}
+      {#if team.category === 'C'}
         <div class="team">
           <p class="name">
-            {team.name}<br />
-            <span>{data.schools.find((s) => s.id === team.school)?.name}</span>
+            {team.name}
           </p>
           <div class="teammates">
             {#each team.teammates as teammate, i}
@@ -43,12 +42,11 @@
 
   <h3>Équipes Lycée</h3>
   <div class="teams">
-    {#each data.teams as team}
-      {#if data.schools.find((s) => s.id === team.school)?.category === 'L'}
+    {#each data.schools as team}
+      {#if team.category === 'L'}
         <div class="team">
           <p class="name">
-            {team.name}<br />
-            <span>{data.schools.find((s) => s.id === team.school)?.name}</span>
+            {team.name}
           </p>
           <div class="teammates">
             {#each team.teammates as teammate, i}

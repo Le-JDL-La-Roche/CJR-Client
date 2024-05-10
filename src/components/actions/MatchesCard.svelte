@@ -41,21 +41,13 @@
       {#each data.matches as match}
         <tr style={match.score1 || match.score2 ? 'opacity: 0.5' : ''}>
           <td>
-            {data.teams.find((team) => team.id === match.team1)?.name}
-            ({utils.map.short[
-              data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.category ||
-                'C'
-            ]}
-            {data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team1)?.school)?.name})
+            {utils.map.short[data.schools.find((school) => (school.id == match.team1))?.category || 'C']}
+            {data.schools.find((school) => (school.id == match.team1))?.name}
           </td>
           <td>–</td>
           <td>
-            {data.teams.find((team) => team.id === match.team2)?.name}
-            ({utils.map.short[
-              data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.category ||
-                'C'
-            ]}
-            {data.schools.find((school) => school.id === data.teams.find((team) => team.id === match.team2)?.school)?.name})
+            {utils.map.short[data.schools.find((school) => (school.id == match.team2))?.category || 'C']}
+            {data.schools.find((school) => (school.id == match.team2))?.name}
           </td>
           <td>
             {new Date(match.fromDate).toLocaleDateString('fr-FR', {
@@ -74,8 +66,8 @@
                 tree = match.tree
                 category = match.category
                 m = match
-                if (tree < 16) allowChangeTeams = true
-                else allowChangeTeams = false
+                // if (tree < 16) allowChangeTeams = true
+                // else allowChangeTeams = false
                 showModal = true
               }}
             >
