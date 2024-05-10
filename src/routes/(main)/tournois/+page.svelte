@@ -17,8 +17,8 @@
 
   {#each ['C', 'L'] as cat}
     <h3>Tournoi {cat === 'C' ? 'Collège' : 'Lycée'}</h3>
-    <div id="tournament-{cat}">
-      <table class="default">
+    <div class="tournament" id="tournament-{cat}">
+      <table class="default" style="min-width: calc(180px * {data.schools.filter((s) => s.category === cat).length + 1})">
         <thead>
           <tr>
             <th />
@@ -63,6 +63,7 @@
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 3px;
     background-color: #1b1b25;
+    overflow-x: auto;
   }
 
   table {
@@ -76,6 +77,7 @@
       text-align: left;
       height: 50px;
       border: 1px solid #1c1c25;
+      min-width: 100px !important;
     }
 
     th {
