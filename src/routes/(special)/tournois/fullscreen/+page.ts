@@ -8,25 +8,15 @@ import { error, type NumericRange } from '@sveltejs/kit'
 import type { PageLoad } from './$types'
 
 const apiMatches = new ApiMatchesService()
-const apiTeams = new ApiTeamsService()
 const apiSchools = new ApiSchoolsService()
 
 export const load: PageLoad = async () => {
   let matches: Match[] = []
-  let teams: Team[] = []
   let schools: School[] = []
 
   ;(await apiMatches.getMatches()).subscribe({
     next: (res) => {
       matches = res.body.data!.matches
-    },
-    error: (err) => {
-      throw error(err.status as NumericRange<400, 599>, err.body.message)
-    }
-  })
-  ;(await apiTeams.getTeams()).subscribe({
-    next: (res) => {
-      teams = res.body.data!.teams
     },
     error: (err) => {
       throw error(err.status as NumericRange<400, 599>, err.body.message)
@@ -41,5 +31,5 @@ export const load: PageLoad = async () => {
     }
   })
 
-  return { matches, teams, schools }
+  return { matches, schools }
 }
